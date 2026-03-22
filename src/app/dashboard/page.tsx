@@ -43,7 +43,7 @@ export default async function DashboardPage({
 
   return (
     <>
-      <DashboardClient tasks={tasks} colourMap={colourMap} />
+      <DashboardClient tasks={tasks} colourMap={colourMap} categories={categories} />
       {activeTask && <TaskPanel task={activeTask} category={activeCategory} attachments={attachments} />}
     </>
   )

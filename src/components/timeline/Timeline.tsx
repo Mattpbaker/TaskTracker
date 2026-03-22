@@ -13,9 +13,10 @@ interface Props {
   categoryColourMap?: Record<string, string>
   accent?: string
   title?: string
+  extra?: React.ReactNode
 }
 
-export default function Timeline({ tasks = [], categoryColourMap = {}, accent = '#10b981', title = 'All Tasks — Timeline' }: Props) {
+export default function Timeline({ tasks = [], categoryColourMap = {}, accent = '#10b981', title = 'All Tasks — Timeline', extra }: Props) {
   const [zoom, setZoom] = useState(100)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -43,6 +44,7 @@ export default function Timeline({ tasks = [], categoryColourMap = {}, accent = 
         <span className="text-[11px] uppercase tracking-widest text-emerald-900 font-semibold">{title}</span>
         <span className="text-[11px] text-emerald-950">Mar 21 → May 14 · 54 days</span>
         <ZoomControls zoom={zoom} onZoom={setZoom} />
+        {extra}
       </div>
       <div ref={containerRef} className="flex-1 overflow-x-auto overflow-y-hidden px-5 pb-5 flex items-center">
         <div className="relative" style={{ minWidth: `${innerWidth}px`, width: '100%', paddingTop: `${vertPad}px`, paddingBottom: `${vertPad}px` }}>
