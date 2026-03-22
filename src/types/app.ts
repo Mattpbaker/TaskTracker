@@ -26,6 +26,7 @@ export interface Task {
   isRecurring: boolean
   isTemplate: boolean
   parentTaskId: string | null
+  recurrenceRule: string | null
 }
 
 export interface Attachment {

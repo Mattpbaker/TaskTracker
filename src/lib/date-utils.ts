@@ -1,7 +1,7 @@
 import { COURSE_END } from './constants'
 
 export function daysUntil(date: Date | string): number {
-  const target = typeof date === 'string' ? new Date(date) : date
+  const target = new Date(typeof date === 'string' ? date : date.getTime())
   const now = new Date()
   now.setHours(0, 0, 0, 0)
   target.setHours(0, 0, 0, 0)

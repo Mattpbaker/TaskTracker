@@ -17,6 +17,7 @@ export function mapTask(t: DbTask): Task {
     isRecurring: t.is_recurring,
     isTemplate: t.is_template,
     parentTaskId: t.parent_task_id,
+    recurrenceRule: t.recurrence_rule,
   }
 }
 
