@@ -18,3 +18,9 @@ body {
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: #0f1a0f; }
 ::-webkit-scrollbar-thumb { background: #1a2e1a; border-radius: 3px; }
+
+@keyframes slide-in-from-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+.animate-in { animation: slide-in-from-right 200ms ease-out; }
