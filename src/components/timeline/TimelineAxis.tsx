@@ -1,4 +1,5 @@
-export { dateToPercent } from '@/lib/timeline'
+import { dateToPercent } from '@/lib/timeline'
+export { dateToPercent }
 
 export function todayPercent(): number {
   const today = new Date().toISOString().slice(0, 10)
