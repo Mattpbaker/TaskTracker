@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskTracker — Homepage Mockup</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0f0a; color: #d1fae5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  /* Nav */
+  .nav { background: #0f1a0f; border-bottom: 1px solid #1a2e1a; padding: 12px 24px; display: flex; align-items: center; gap: 16px; }
+  .nav-logo { display: flex; align-items: center; gap: 8px; margin-right: 16px; }
+  .nav-dot { width: 10px; height: 10px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
+  .nav-title { color: #d1fae5; font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+  .nav-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; color: #4b7a5a; border: 1px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .nav-tab.active { background: #0f2d1f; border-color: #10b981; color: #10b981; }
+  .nav-tab:hover:not(.active) { color: #6ee7b7; }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .date-badge { font-size: 11px; color: #374151; background: #0f1a0f; border: 1px solid #1a2e1a; border-radius: 4px; padding: 4px 8px; }
+  .deadline-badge { font-size: 11px; color: #f59e0b; background: #1a1200; border: 1px solid #3a2800; border-radius: 4px; padding: 4px 8px; }
+
+  /* Stats bar */
+  .stats-bar { display: flex; gap: 12px; padding: 16px 24px; border-bottom: 1px solid #1a2e1a; }
+  .stat-card { flex: 1; background: #0f1a0f; border: 1px solid #1a2e1a; border-radius: 8px; padding: 12px 16px; }
+  .stat-card.highlight { border-color: #10b981; background: #0a1f12; }
+  .stat-value { font-size: 22px; font-weight: 700; color: #10b981; line-height: 1; margin-bottom: 4px; }
+  .stat-card:nth-child(3) .stat-value { color: #f59e0b; }
+  .stat-card:nth-child(4) .stat-value { color: #ef4444; }
+  .stat-card:nth-child(5) .stat-value { color: #6ee7b7; }
+  .stat-card:nth-child(6) .stat-value { color: #a3e635; }
+  .stat-label { font-size: 11px; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Timeline section */
+  .timeline-header { padding: 20px 24px 8px; display: flex; align-items: center; justify-content: space-between; }
+  .timeline-title { font-size: 13px; color: #4b7a5a; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  .timeline-range { font-size: 12px; color: #374151; }
+
+  .timeline-container { padding: 0 24px 24px; overflow-x: auto; }
+  .timeline-inner { position: relative; min-width: 900px; padding: 80px 0 80px; }
+
+  /* The line */
+  .timeline-line {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background: linear-gradient(to right, #1a2e1a, #10b981 15%, #10b981 85%, #1a2e1a);
+    transform: translateY(-50%);
+  }
+  .today-marker {
+    position: absolute;
+    top: 50%;
+    left: calc(0% + 20px);
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+  }
+  .today-line { width: 2px; height: 30px; background: #10b981; opacity: 0.6; }
+  .today-label { font-size: 9px; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+  /* Date tick marks */
+  .tick {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .tick-line { width: 1px; height: 12px; background: #1a2e1a; }
+  .tick-label { font-size: 9px; color: #2d4a35; white-space: nowrap; }
+
+  /* Task cards */
+  .task-node {
+    position: absolute;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 5;
+  }
+  .task-node:hover .task-card { border-color: #10b981; box-shadow: 0 0 16px rgba(16,185,129,0.25); }
+
+  .task-node.above { bottom: 50%; padding-bottom: 18px; flex-direction: column-reverse; }
+  .task-node.below { top: 50%; padding-top: 18px; }
+
+  .task-stem { width: 1px; height: 24px; background: linear-gradient(to bottom, #2d4a35, transparent); }
+  .task-node.above .task-stem { background: linear-gradient(to top, #2d4a35, transparent); }
+
+  .task-dot {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #0a0f0a;
+    border: 2px solid #10b981;
+    z-index: 6;
+    box-shadow: 0 0 6px rgba(16,185,129,0.4);
+  }
+
+  .task-card {
+    background: #0f1a0f;
+    border: 1px solid #1a2e1a;
+    border-radius: 8px;
+    padding: 10px 12px;
+    width: 140px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    transition: all 0.15s;
+  }
+  .task-cat-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+  .task-card-title { font-size: 12px; font-weight: 600; color: #d1fae5; line-height: 1.3; margin-bottom: 4px; }
+  .task-card-date { font-size: 10px; color: #374151; margin-bottom: 6px; }
+  .task-card-tag { display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 3px; margin-bottom: 4px; }
+  .task-progress { height: 3px; background: #1a2e1a; border-radius: 2px; overflow: hidden; }
+  .task-progress-fill { height: 100%; border-radius: 2px; background: #10b981; }
+
+  /* Category colours */
+  .cat-social    { background: #10b981; }
+  .cat-report    { background: #f59e0b; }
+  .cat-recog     { background: #6366f1; }
+  .cat-training  { background: #ec4899; }
+  .cat-tracking  { background: #14b8a6; }
+  .cat-video     { background: #a3e635; }
+  .cat-working   { background: #8b5cf6; }
+
+  .tag-social   { background: #052e1e; color: #6ee7b7; }
+  .tag-report   { background: #3a2000; color: #fcd34d; }
+  .tag-recog    { background: #1e1b4b; color: #a5b4fc; }
+  .tag-self     { background: #1a1535; color: #c4b5fd; }
+  .tag-training { background: #3a0020; color: #fbcfe8; }
+
+  /* Overdue / urgent glow */
+  .task-card.urgent { border-color: #f59e0b; box-shadow: 0 0 10px rgba(245,158,11,0.2); }
+
+  /* Legend */
+  .legend { display: flex; gap: 16px; padding: 0 24px 16px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #4b7a5a; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<div class="nav">
+  <div class="nav-logo">
+    <div class="nav-dot"></div>
+    <div class="nav-title">TaskTracker</div>
+  </div>
+  <div class="nav-tab active">All Tasks</div>
+  <div class="nav-tab">Social Media</div>
+  <div class="nav-tab">Recognition Day</div>
+  <div class="nav-tab">Tracking Systems</div>
+  <div class="nav-tab">Training</div>
+  <div class="nav-tab">Annual Report</div>
+  <div class="nav-tab">Video & Q&A</div>
+  <div class="nav-tab">Working Groups</div>
+  <div class="nav-right">
+    <div class="date-badge">Mar 21, 2026</div>
+    <div class="deadline-badge">⚡ 54 days left</div>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-card highlight">
+    <div class="stat-value">8</div>
+    <div class="stat-label">Recurring Active</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">3</div>
+    <div class="stat-label">Due This Week</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">5</div>
+    <div class="stat-label">Upcoming</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">2</div>
+    <div class="stat-label">Overdue</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">4</div>
+    <div class="stat-label">In Progress</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">11</div>
+    <div class="stat-label">Completed</div>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot cat-social"></div>Social Media</div>
+  <div class="legend-item"><div class="legend-dot cat-report"></div>Annual Report</div>
+  <div class="legend-item"><div class="legend-dot cat-recog"></div>Recognition Day</div>
+  <div class="legend-item"><div class="legend-dot cat-training"></div>Training</div>
+  <div class="legend-item"><div class="legend-dot cat-tracking"></div>Tracking Systems</div>
+  <div class="legend-item"><div class="legend-dot cat-video"></div>Video & Q&A</div>
+  <div class="legend-item"><div class="legend-dot cat-working"></div>Working Groups</div>
+</div>
+
+<!-- Timeline header -->
+<div class="timeline-header">
+  <div class="timeline-title">Timeline — Mar 21 → May 14</div>
+  <div class="timeline-range">54 days · 7 categories</div>
+</div>
+
+<!-- Timeline -->
+<div class="timeline-container">
+  <div class="timeline-inner">
+
+    <!-- The line -->
+    <div class="timeline-line"></div>
+
+    <!-- TODAY marker -->
+    <div class="today-marker" style="left: calc(0% + 20px)">
+      <div class="today-line" style="height:40px"></div>
+      <div class="today-label">Today</div>
+    </div>
+
+    <!-- Dot markers on line -->
+    <!-- Team Review: Mar 23 = ~3.7% -->
+    <div class="task-dot" style="left: calc(3.7% + 20px)"></div>
+    <!-- Storyboard: Mar 30 = ~16.7% -->
+    <div class="task-dot" style="left: calc(16.7% + 20px); border-color: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,0.4)"></div>
+    <!-- Portfolios: Apr 27 = ~66.7% -->
+    <div class="task-dot" style="left: calc(66.7% + 20px); border-color: #8b5cf6; box-shadow: 0 0 6px rgba(139,92,246,0.4)"></div>
+    <!-- Annual Report: May 8 = ~86.7% -->
+    <div class="task-dot" style="left: calc(86.7% + 20px); border-color: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,0.4)"></div>
+    <!-- Video: May 11 = ~91.7% -->
+    <div class="task-dot" style="left: calc(91.7% + 20px); border-color: #a3e635; box-shadow: 0 0 6px rgba(163,230,53,0.4)"></div>
+    <!-- Q&A: May 14 = ~98% -->
+    <div class="task-dot" style="left: calc(98% + 20px); border-color: #6366f1; box-shadow: 0 0 6px rgba(99,102,241,0.4)"></div>
+
+    <!-- Date ticks -->
+    <div class="tick" style="left: calc(0% + 20px)"><div class="tick-line"></div><div class="tick-label">Mar 21</div></div>
+    <div class="tick" style="left: calc(25% + 20px)"><div class="tick-line"></div><div class="tick-label">Apr 7</div></div>
+    <div class="tick" style="left: calc(50% + 20px)"><div class="tick-line"></div><div class="tick-label">Apr 24</div></div>
+    <div class="tick" style="left: calc(75% + 20px)"><div class="tick-line"></div><div class="tick-label">May 9</div></div>
+    <div class="tick" style="left: calc(100% + 20px)"><div class="tick-line"></div><div class="tick-label">May 14</div></div>
+
+    <!-- ABOVE THE LINE (odd tasks) -->
+
+    <!-- Team Company Review: Mar 23 (above) -->
+    <div class="task-node above" style="left: calc(3.7% + 20px)">
+      <div class="task-stem"></div>
+      <div class="task-card urgent">
+        <div><span class="task-cat-dot cat-recog"></span><span class="task-card-title">Team Company Review</span></div>
+        <div class="task-card-date">Mar 23–26</div>
+        <div class="task-card-tag tag-self">Self Leadership</div>
+        <div class="task-progress"><div class="task-progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Portfolios: Apr 27 (above) -->
+    <div class="task-node above" style="left: calc(66.7% + 20px)">
+      <div class="task-stem"></div>
+      <div class="task-card">
+        <div><span class="task-cat-dot" style="background:#8b5cf6"></span><span class="task-card-title">All Portfolios Due</span></div>
+        <div class="task-card-date">Apr 27 · 2:00pm</div>
+        <div class="task-card-tag tag-self">All Modules</div>
+        <div class="task-progress"><div class="task-progress-fill" style="width:20%"></div></div>
+      </div>
+    </div>
+
+    <!-- Video: May 11 (above) -->
+    <div class="task-node above" style="left: calc(91.7% + 20px)">
+      <div class="task-stem"></div>
+      <div class="task-card">
+        <div><span class="task-cat-dot cat-video"></span><span class="task-card-title">Annual Report Video</span></div>
+        <div class="task-card-date">May 11 · 12:00pm</div>
+        <div class="task-card-tag" style="background:#1a2200;color:#bef264">Video & Q&A</div>
+        <div class="task-progress"><div class="task-progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- BELOW THE LINE (even tasks) -->
+
+    <!-- Storyboard: Mar 30 (below) -->
+    <div class="task-node below" style="left: calc(16.7% + 20px)">
+      <div class="task-stem"></div>
+      <div class="task-card">
+        <div><span class="task-cat-dot" style="background:#f59e0b"></span><span class="task-card-title">Storyboard Assignment</span></div>
+        <div class="task-card-date">w/c Mar 30</div>
+        <div class="task-card-tag tag-self">Self Leadership</div>
+        <div class="task-progress"><div class="task-progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Annual Report: May 8 (below) -->
+    <div class="task-node below" style="left: calc(86.7% + 20px)">
+      <div class="task-stem"></div>
+      <div class="task-card">
+        <div><span class="task-cat-dot cat-report"></span><span class="task-card-title">Annual Report</span></div>
+        <div class="task-card-date">May 8 · 2:00pm</div>
+        <div class="task-card-tag tag-report">Annual Report</div>
+        <div class="task-progress"><div class="task-progress-fill" style="width:10%"></div></div>
+      </div>
+    </div>
+
+    <!-- Q&A: May 14 (below) -->
+    <div class="task-node below" style="left: calc(98% + 20px)">
+      <div class="task-stem"></div>
+      <div class="task-card">
+        <div><span class="task-cat-dot cat-recog"></span><span class="task-card-title">Annual Report Q&A</span></div>
+        <div class="task-card-date">May 14 · 9:30am</div>
+        <div class="task-card-tag tag-report">Annual Report</div>
+        <div class="task-progress"><div class="task-progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div style="padding:12px 24px;border-top:1px solid #1a2e1a;font-size:11px;color:#2d4a35;text-align:center">
+  This is a static mockup — click behaviour, task detail panel, and recurring tasks not shown here
+</div>
+
+<script>
+// Inject helper infrastructure placeholder
+</script>
+</body>
+</html>

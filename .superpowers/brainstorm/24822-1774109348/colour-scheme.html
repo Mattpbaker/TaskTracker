@@ -1,0 +1,107 @@
+<h2>Colour Scheme</h2>
+<p class="subtitle">Which visual vibe fits best for a task tracker you'll use daily?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="dark-indigo" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f172a;border-radius:6px;padding:14px;margin-bottom:8px">
+      <div style="background:#1e293b;border-radius:4px;padding:8px;margin-bottom:6px;display:flex;align-items:center;gap:8px">
+        <div style="width:8px;height:8px;background:#6366f1;border-radius:50%"></div>
+        <span style="color:#e2e8f0;font-size:10px;font-family:monospace;font-weight:600">TaskTracker</span>
+        <div style="margin-left:auto;display:flex;gap:4px">
+          <div style="background:#312e81;border:1px solid #4f46e5;border-radius:3px;padding:2px 6px;color:#a5b4fc;font-size:8px">Social</div>
+          <div style="background:#1e293b;border-radius:3px;padding:2px 6px;color:#64748b;font-size:8px">Report</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:6px">
+        <div style="flex:1;background:#1e293b;border-radius:3px;padding:6px;border-left:3px solid #6366f1">
+          <div style="color:#94a3b8;font-size:8px">12</div><div style="color:#475569;font-size:7px">Tasks</div>
+        </div>
+        <div style="flex:1;background:#1e293b;border-radius:3px;padding:6px;border-left:3px solid #f59e0b">
+          <div style="color:#94a3b8;font-size:8px">3</div><div style="color:#475569;font-size:7px">Due soon</div>
+        </div>
+        <div style="flex:1;background:#1e293b;border-radius:3px;padding:6px;border-left:3px solid #10b981">
+          <div style="color:#94a3b8;font-size:8px">5</div><div style="color:#475569;font-size:7px">Done</div>
+        </div>
+      </div>
+      <div style="position:relative;height:28px;background:#1e293b;border-radius:3px;padding:4px 8px">
+        <div style="position:absolute;left:10%;top:8px;width:18%;height:8px;background:#6366f1;border-radius:10px;opacity:0.9"></div>
+        <div style="position:absolute;left:32%;top:8px;width:1px;height:14px;background:#334155"></div>
+        <div style="position:absolute;left:32%;top:4px;width:8px;height:8px;border-radius:50%;background:#0f172a;border:2px solid #8b5cf6;transform:translateX(-50%)"></div>
+        <div style="position:absolute;left:60%;top:8px;width:1px;height:14px;background:#334155"></div>
+        <div style="position:absolute;left:60%;top:4px;width:8px;height:8px;border-radius:50%;background:#0f172a;border:2px solid #f59e0b;transform:translateX(-50%)"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Dark Indigo</h3>
+      <p>Deep navy background, indigo/violet accents. Sleek, focused, easy on the eyes for long sessions.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="dark-emerald" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0f0a;border-radius:6px;padding:14px;margin-bottom:8px">
+      <div style="background:#0f1f12;border-radius:4px;padding:8px;margin-bottom:6px;display:flex;align-items:center;gap:8px">
+        <div style="width:8px;height:8px;background:#10b981;border-radius:50%"></div>
+        <span style="color:#d1fae5;font-size:10px;font-family:monospace;font-weight:600">TaskTracker</span>
+        <div style="margin-left:auto;display:flex;gap:4px">
+          <div style="background:#064e3b;border:1px solid #10b981;border-radius:3px;padding:2px 6px;color:#6ee7b7;font-size:8px">Social</div>
+          <div style="background:#0f1f12;border-radius:3px;padding:2px 6px;color:#374151;font-size:8px">Report</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:6px">
+        <div style="flex:1;background:#0f1f12;border-radius:3px;padding:6px;border-left:3px solid #10b981">
+          <div style="color:#6ee7b7;font-size:8px">12</div><div style="color:#374151;font-size:7px">Tasks</div>
+        </div>
+        <div style="flex:1;background:#0f1f12;border-radius:3px;padding:6px;border-left:3px solid #f59e0b">
+          <div style="color:#6ee7b7;font-size:8px">3</div><div style="color:#374151;font-size:7px">Due soon</div>
+        </div>
+        <div style="flex:1;background:#0f1f12;border-radius:3px;padding:6px;border-left:3px solid #34d399">
+          <div style="color:#6ee7b7;font-size:8px">5</div><div style="color:#374151;font-size:7px">Done</div>
+        </div>
+      </div>
+      <div style="position:relative;height:28px;background:#0f1f12;border-radius:3px;padding:4px 8px">
+        <div style="position:absolute;left:10%;top:8px;width:18%;height:8px;background:#10b981;border-radius:10px;opacity:0.9"></div>
+        <div style="position:absolute;left:32%;top:4px;width:8px;height:8px;border-radius:50%;background:#0a0f0a;border:2px solid #10b981;transform:translateX(-50%)"></div>
+        <div style="position:absolute;left:60%;top:4px;width:8px;height:8px;border-radius:50%;background:#0a0f0a;border:2px solid #f59e0b;transform:translateX(-50%)"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Dark Emerald</h3>
+      <p>Near-black background, emerald greens. Clean terminal-esque feel, very readable.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="light-clean" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8fafc;border-radius:6px;padding:14px;margin-bottom:8px">
+      <div style="background:#fff;border-radius:4px;padding:8px;margin-bottom:6px;display:flex;align-items:center;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
+        <div style="width:8px;height:8px;background:#6366f1;border-radius:50%"></div>
+        <span style="color:#1e293b;font-size:10px;font-family:monospace;font-weight:600">TaskTracker</span>
+        <div style="margin-left:auto;display:flex;gap:4px">
+          <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:3px;padding:2px 6px;color:#4f46e5;font-size:8px">Social</div>
+          <div style="background:#f1f5f9;border-radius:3px;padding:2px 6px;color:#94a3b8;font-size:8px">Report</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:6px">
+        <div style="flex:1;background:#fff;border-radius:3px;padding:6px;border-left:3px solid #6366f1;box-shadow:0 1px 2px rgba(0,0,0,0.05)">
+          <div style="color:#1e293b;font-size:8px">12</div><div style="color:#94a3b8;font-size:7px">Tasks</div>
+        </div>
+        <div style="flex:1;background:#fff;border-radius:3px;padding:6px;border-left:3px solid #f59e0b;box-shadow:0 1px 2px rgba(0,0,0,0.05)">
+          <div style="color:#1e293b;font-size:8px">3</div><div style="color:#94a3b8;font-size:7px">Due soon</div>
+        </div>
+        <div style="flex:1;background:#fff;border-radius:3px;padding:6px;border-left:3px solid #10b981;box-shadow:0 1px 2px rgba(0,0,0,0.05)">
+          <div style="color:#1e293b;font-size:8px">5</div><div style="color:#94a3b8;font-size:7px">Done</div>
+        </div>
+      </div>
+      <div style="position:relative;height:28px;background:#fff;border-radius:3px;padding:4px 8px;box-shadow:0 1px 2px rgba(0,0,0,0.05)">
+        <div style="position:absolute;left:10%;top:8px;width:18%;height:8px;background:#6366f1;border-radius:10px;opacity:0.7"></div>
+        <div style="position:absolute;left:32%;top:4px;width:8px;height:8px;border-radius:50%;background:#f8fafc;border:2px solid #6366f1;transform:translateX(-50%)"></div>
+        <div style="position:absolute;left:60%;top:4px;width:8px;height:8px;border-radius:50%;background:#f8fafc;border:2px solid #f59e0b;transform:translateX(-50%)"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Light &amp; Clean</h3>
+      <p>White/slate background, indigo accents. Crisp and professional, easy to screenshot for evidence.</p>
+    </div>
+  </div>
+
+</div>

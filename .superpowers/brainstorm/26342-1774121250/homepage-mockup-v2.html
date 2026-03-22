@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskTracker — Homepage Mockup v2</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0f0a; color: #d1fae5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* Top bar */
+  .topbar { background: #0f1a0f; border-bottom: 1px solid #1a2e1a; padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+  .nav-dot { width: 9px; height: 9px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
+  .nav-title { color: #d1fae5; font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .date-badge { font-size: 11px; color: #374151; background: #0f1a0f; border: 1px solid #1a2e1a; border-radius: 4px; padding: 3px 8px; }
+  .deadline-badge { font-size: 11px; color: #f59e0b; background: #1a1200; border: 1px solid #3a2800; border-radius: 4px; padding: 3px 8px; }
+
+  /* Main layout */
+  .main { display: flex; flex: 1; overflow: hidden; }
+
+  /* Sidebar */
+  .sidebar { width: 200px; flex-shrink: 0; background: #0b140b; border-right: 1px solid #1a2e1a; display: flex; flex-direction: column; padding: 16px 0; }
+  .sidebar-section { padding: 0 12px; margin-bottom: 20px; }
+  .sidebar-label { font-size: 9px; color: #2d4a35; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 8px; padding: 0 4px; }
+
+  /* Stats list */
+  .stat-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 8px; border-radius: 5px; margin-bottom: 2px; }
+  .stat-row:hover { background: #0f1a0f; }
+  .stat-row-label { font-size: 12px; color: #4b7a5a; display: flex; align-items: center; gap: 6px; }
+  .stat-row-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .stat-row-value { font-size: 13px; font-weight: 700; }
+
+  /* Category nav */
+  .cat-item { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 6px; margin: 0 4px 2px; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+  .cat-item.active { background: #0f2d1f; border-color: #10b981; }
+  .cat-item:hover:not(.active) { background: #0f1a0f; }
+  .cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .cat-name { font-size: 12px; color: #4b7a5a; line-height: 1.3; }
+  .cat-item.active .cat-name { color: #6ee7b7; }
+  .cat-count { margin-left: auto; font-size: 10px; color: #2d4a35; background: #1a2e1a; border-radius: 3px; padding: 1px 5px; }
+
+  /* Content area */
+  .content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+
+  /* Timeline section */
+  .timeline-header { padding: 12px 20px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1a2e1a; gap: 12px; }
+  .timeline-title { font-size: 12px; color: #4b7a5a; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  .timeline-range { font-size: 11px; color: #2d4a35; }
+  .zoom-controls { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .zoom-btn { background: #0f1a0f; border: 1px solid #1a2e1a; color: #4b7a5a; border-radius: 4px; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; line-height: 1; transition: all 0.15s; user-select: none; }
+  .zoom-btn:hover { border-color: #10b981; color: #10b981; }
+  .zoom-label { font-size: 11px; color: #2d4a35; min-width: 36px; text-align: center; }
+  input[type=range].zoom-slider { -webkit-appearance: none; appearance: none; width: 100px; height: 3px; background: #1a2e1a; border-radius: 2px; outline: none; cursor: pointer; }
+  input[type=range].zoom-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #10b981; box-shadow: 0 0 4px rgba(16,185,129,0.5); cursor: pointer; }
+  input[type=range].zoom-slider::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: #10b981; border: none; cursor: pointer; }
+
+  .timeline-container { flex: 1; overflow-x: auto; padding: 0 20px 20px; display: flex; align-items: center; }
+  .timeline-inner { position: relative; min-width: 860px; width: 100%; padding: 100px 0 100px; margin: auto 0; }
+
+  .timeline-line {
+    position: absolute; top: 50%; left: 20px; right: 20px; height: 2px;
+    background: linear-gradient(to right, #1a2e1a, #10b981 10%, #10b981 90%, #1a2e1a);
+    transform: translateY(-50%);
+  }
+  .today-marker {
+    position: absolute; top: 50%; left: calc(0% + 20px);
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center; z-index: 10;
+  }
+  .today-line { width: 2px; height: 40px; background: #10b981; opacity: 0.5; }
+  .today-label { font-size: 9px; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+  .tick { position: absolute; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .tick-line { width: 1px; height: 10px; background: #1a2e1a; }
+  .tick-label { font-size: 9px; color: #2d4a35; white-space: nowrap; }
+
+  .task-node { position: absolute; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; cursor: pointer; z-index: 5; }
+  .task-node:hover .task-card { border-color: #10b981; box-shadow: 0 0 16px rgba(16,185,129,0.2); }
+  .task-node.above { bottom: 50%; padding-bottom: 16px; flex-direction: column-reverse; }
+  .task-node.below { top: 50%; padding-top: 16px; }
+  .task-stem { width: 1px; height: 20px; background: linear-gradient(to bottom, #2d4a35, transparent); }
+  .task-node.above .task-stem { background: linear-gradient(to top, #2d4a35, transparent); }
+
+  .task-dot { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; border-radius: 50%; background: #0a0f0a; border: 2px solid #10b981; z-index: 6; box-shadow: 0 0 6px rgba(16,185,129,0.4); }
+
+  .task-card { background: #0f1a0f; border: 1px solid #1a2e1a; border-radius: 8px; padding: 9px 11px; width: 136px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); transition: all 0.15s; }
+  .task-card.urgent { border-color: #f59e0b33; }
+  .task-cat-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle; }
+  .task-card-title { font-size: 11px; font-weight: 600; color: #d1fae5; line-height: 1.3; margin-bottom: 3px; }
+  .task-card-date { font-size: 10px; color: #374151; margin-bottom: 5px; }
+  .task-card-tag { display: inline-block; font-size: 9px; padding: 1px 5px; border-radius: 3px; margin-bottom: 5px; }
+  .task-progress { height: 3px; background: #1a2e1a; border-radius: 2px; overflow: hidden; }
+  .task-progress-fill { height: 100%; border-radius: 2px; background: #10b981; }
+
+  /* Legend */
+  .legend { display: flex; gap: 14px; padding: 8px 20px; border-bottom: 1px solid #1a2e1a; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #2d4a35; }
+  .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="nav-dot"></div>
+  <div class="nav-title">TaskTracker</div>
+  <div class="nav-right">
+    <div class="date-badge">Mar 21, 2026</div>
+    <div class="deadline-badge">⚡ 54 days left</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <!-- Stats -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">Overview</div>
+      <div class="stat-row">
+        <div class="stat-row-label"><div class="stat-row-dot" style="background:#14b8a6"></div>Recurring</div>
+        <div class="stat-row-value" style="color:#14b8a6">8</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-row-label"><div class="stat-row-dot" style="background:#f59e0b"></div>Due this week</div>
+        <div class="stat-row-value" style="color:#f59e0b">3</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-row-label"><div class="stat-row-dot" style="background:#6ee7b7"></div>Upcoming</div>
+        <div class="stat-row-value" style="color:#6ee7b7">5</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-row-label"><div class="stat-row-dot" style="background:#ef4444"></div>Overdue</div>
+        <div class="stat-row-value" style="color:#ef4444">2</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-row-label"><div class="stat-row-dot" style="background:#6366f1"></div>In progress</div>
+        <div class="stat-row-value" style="color:#6366f1">4</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-row-label"><div class="stat-row-dot" style="background:#a3e635"></div>Done</div>
+        <div class="stat-row-value" style="color:#a3e635">11</div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="sidebar-section" style="flex:1">
+      <div class="sidebar-label">Categories</div>
+      <div class="cat-item active">
+        <div class="cat-dot" style="background:#10b981"></div>
+        <div class="cat-name">All Tasks</div>
+      </div>
+      <div class="cat-item">
+        <div class="cat-dot" style="background:#10b981; opacity:0.7"></div>
+        <div class="cat-name">Social Media</div>
+        <div class="cat-count">6</div>
+      </div>
+      <div class="cat-item">
+        <div class="cat-dot" style="background:#6366f1"></div>
+        <div class="cat-name">Recognition Day</div>
+        <div class="cat-count">3</div>
+      </div>
+      <div class="cat-item">
+        <div class="cat-dot" style="background:#14b8a6"></div>
+        <div class="cat-name">Tracking Systems</div>
+        <div class="cat-count">8</div>
+      </div>
+      <div class="cat-item">
+        <div class="cat-dot" style="background:#ec4899"></div>
+        <div class="cat-name">Training</div>
+        <div class="cat-count">14</div>
+      </div>
+      <div class="cat-item">
+        <div class="cat-dot" style="background:#f59e0b"></div>
+        <div class="cat-name">Annual Report</div>
+        <div class="cat-count">5</div>
+      </div>
+      <div class="cat-item">
+        <div class="cat-dot" style="background:#a3e635"></div>
+        <div class="cat-name">Video & Q&A</div>
+        <div class="cat-count">3</div>
+      </div>
+      <div class="cat-item">
+        <div class="cat-dot" style="background:#8b5cf6"></div>
+        <div class="cat-name">Working Groups</div>
+        <div class="cat-count">4</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main content -->
+  <div class="content">
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#10b981;opacity:0.7"></div>Social Media</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Annual Report</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>Recognition Day</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ec4899"></div>Training</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#14b8a6"></div>Tracking</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a3e635"></div>Video & Q&A</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>Working Groups</div>
+    </div>
+
+    <!-- Timeline header -->
+    <div class="timeline-header">
+      <div class="timeline-title">All Tasks — Timeline</div>
+      <div class="timeline-range">Mar 21 → May 14 · 54 days</div>
+      <div class="zoom-controls">
+        <div class="zoom-btn" onclick="changeZoom(-10)">−</div>
+        <input type="range" class="zoom-slider" id="zoomSlider" min="60" max="300" value="100" oninput="setZoom(this.value)">
+        <div class="zoom-btn" onclick="changeZoom(10)">+</div>
+        <div class="zoom-label" id="zoomLabel">100%</div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-container">
+      <div class="timeline-inner">
+
+        <div class="timeline-line"></div>
+
+        <div class="today-marker" style="left: calc(0% + 20px)">
+          <div class="today-line"></div>
+          <div class="today-label">Today</div>
+        </div>
+
+        <!-- Dots -->
+        <div class="task-dot" style="left: calc(3.7% + 20px); border-color:#6366f1"></div>
+        <div class="task-dot" style="left: calc(16.7% + 20px); border-color:#f59e0b"></div>
+        <div class="task-dot" style="left: calc(66.7% + 20px); border-color:#8b5cf6"></div>
+        <div class="task-dot" style="left: calc(86.7% + 20px); border-color:#f59e0b"></div>
+        <div class="task-dot" style="left: calc(91.7% + 20px); border-color:#a3e635"></div>
+        <div class="task-dot" style="left: calc(98% + 20px); border-color:#6366f1"></div>
+
+        <!-- Ticks -->
+        <div class="tick" style="left: calc(0% + 20px)"><div class="tick-line"></div><div class="tick-label">Mar 21</div></div>
+        <div class="tick" style="left: calc(25% + 20px)"><div class="tick-line"></div><div class="tick-label">Apr 7</div></div>
+        <div class="tick" style="left: calc(50% + 20px)"><div class="tick-line"></div><div class="tick-label">Apr 24</div></div>
+        <div class="tick" style="left: calc(75% + 20px)"><div class="tick-line"></div><div class="tick-label">May 9</div></div>
+        <div class="tick" style="left: calc(100% + 20px)"><div class="tick-line"></div><div class="tick-label">May 14</div></div>
+
+        <!-- ABOVE -->
+        <div class="task-node above" style="left: calc(3.7% + 20px)">
+          <div class="task-stem"></div>
+          <div class="task-card urgent">
+            <div><span class="task-cat-dot" style="background:#6366f1"></span><span class="task-card-title">Team Company Review</span></div>
+            <div class="task-card-date">Mar 23–26</div>
+            <div class="task-card-tag" style="background:#1a1535;color:#c4b5fd">Self Leadership</div>
+            <div class="task-progress"><div class="task-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <div class="task-node above" style="left: calc(66.7% + 20px)">
+          <div class="task-stem"></div>
+          <div class="task-card">
+            <div><span class="task-cat-dot" style="background:#8b5cf6"></span><span class="task-card-title">All Portfolios Due</span></div>
+            <div class="task-card-date">Apr 27 · 2:00pm</div>
+            <div class="task-card-tag" style="background:#1a1535;color:#c4b5fd">All Modules</div>
+            <div class="task-progress"><div class="task-progress-fill" style="width:20%"></div></div>
+          </div>
+        </div>
+
+        <div class="task-node above" style="left: calc(91.7% + 20px)">
+          <div class="task-stem"></div>
+          <div class="task-card">
+            <div><span class="task-cat-dot" style="background:#a3e635"></span><span class="task-card-title">Annual Report Video</span></div>
+            <div class="task-card-date">May 11 · 12:00pm</div>
+            <div class="task-card-tag" style="background:#1a2200;color:#bef264">Video & Q&A</div>
+            <div class="task-progress"><div class="task-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <!-- BELOW -->
+        <div class="task-node below" style="left: calc(16.7% + 20px)">
+          <div class="task-stem"></div>
+          <div class="task-card">
+            <div><span class="task-cat-dot" style="background:#f59e0b"></span><span class="task-card-title">Storyboard Assignment</span></div>
+            <div class="task-card-date">w/c Mar 30</div>
+            <div class="task-card-tag" style="background:#1a1535;color:#c4b5fd">Self Leadership</div>
+            <div class="task-progress"><div class="task-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <div class="task-node below" style="left: calc(86.7% + 20px)">
+          <div class="task-stem"></div>
+          <div class="task-card">
+            <div><span class="task-cat-dot" style="background:#f59e0b"></span><span class="task-card-title">Annual Report</span></div>
+            <div class="task-card-date">May 8 · 2:00pm</div>
+            <div class="task-card-tag" style="background:#3a2000;color:#fcd34d">Annual Report</div>
+            <div class="task-progress"><div class="task-progress-fill" style="width:10%"></div></div>
+          </div>
+        </div>
+
+        <div class="task-node below" style="left: calc(98% + 20px)">
+          <div class="task-stem"></div>
+          <div class="task-card">
+            <div><span class="task-cat-dot" style="background:#6366f1"></span><span class="task-card-title">Annual Report Q&A</span></div>
+            <div class="task-card-date">May 14 · 9:30am</div>
+            <div class="task-card-tag" style="background:#3a2000;color:#fcd34d">Annual Report</div>
+            <div class="task-progress"><div class="task-progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const BASE_WIDTH = 860;
+  let currentZoom = 100;
+
+  function setZoom(val) {
+    currentZoom = parseInt(val);
+    const inner = document.querySelector('.timeline-inner');
+    inner.style.minWidth = (BASE_WIDTH * currentZoom / 100) + 'px';
+    document.getElementById('zoomLabel').textContent = currentZoom + '%';
+    document.getElementById('zoomSlider').value = currentZoom;
+  }
+
+  function changeZoom(delta) {
+    const newVal = Math.min(300, Math.max(60, currentZoom + delta));
+    setZoom(newVal);
+  }
+
+  // Ctrl/Cmd + scroll to zoom
+  document.querySelector('.timeline-container').addEventListener('wheel', function(e) {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      changeZoom(e.deltaY < 0 ? 10 : -10);
+    }
+  }, { passive: false });
+</script>
+
+</body>
+</html>

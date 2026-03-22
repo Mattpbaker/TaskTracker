@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Detail — Mockup</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0f0a; color: #d1fae5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; display: flex; }
+
+  /* Dimmed background representing the timeline behind */
+  .backdrop { flex: 1; background: #0a0f0a; opacity: 0.6; }
+
+  /* Slide-in panel from right */
+  .panel { width: 420px; flex-shrink: 0; background: #0b140b; border-left: 1px solid #1a2e1a; display: flex; flex-direction: column; height: 100vh; overflow-y: auto; }
+
+  .panel-header { padding: 18px 20px 14px; border-bottom: 1px solid #1a2e1a; display: flex; align-items: flex-start; gap: 10px; }
+  .panel-cat-bar { width: 3px; height: 40px; border-radius: 2px; background: #6366f1; flex-shrink: 0; margin-top: 2px; }
+  .panel-header-info { flex: 1; }
+  .panel-title { font-size: 16px; font-weight: 700; color: #d1fae5; line-height: 1.3; margin-bottom: 4px; }
+  .panel-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .panel-tag { font-size: 10px; padding: 2px 7px; border-radius: 3px; }
+  .tag-cat { background: #1e1b4b; color: #a5b4fc; }
+  .tag-module { background: #1a1535; color: #c4b5fd; }
+  .panel-close { color: #2d4a35; cursor: pointer; font-size: 18px; line-height: 1; padding: 2px; }
+  .panel-close:hover { color: #6ee7b7; }
+
+  /* Sections */
+  .panel-section { padding: 16px 20px; border-bottom: 1px solid #1a2e1a; }
+  .section-label { font-size: 10px; color: #2d4a35; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 10px; }
+
+  /* Dates row */
+  .dates-row { display: flex; gap: 10px; }
+  .date-box { flex: 1; background: #0f1a0f; border: 1px solid #1a2e1a; border-radius: 6px; padding: 8px 12px; }
+  .date-box-label { font-size: 9px; color: #2d4a35; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .date-box-value { font-size: 13px; color: #6ee7b7; font-weight: 600; }
+  .date-box-sub { font-size: 10px; color: #374151; margin-top: 2px; }
+
+  /* Progress */
+  .progress-row { display: flex; align-items: center; gap: 12px; }
+  .progress-track { flex: 1; height: 6px; background: #1a2e1a; border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(to right, #10b981, #6ee7b7); transition: width 0.3s; }
+  .progress-pct { font-size: 13px; font-weight: 700; color: #10b981; min-width: 36px; text-align: right; }
+  .progress-btns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .progress-btn { font-size: 11px; padding: 4px 10px; border-radius: 4px; border: 1px solid #1a2e1a; background: #0f1a0f; color: #4b7a5a; cursor: pointer; transition: all 0.15s; }
+  .progress-btn:hover, .progress-btn.active { border-color: #10b981; color: #10b981; background: #0a1f12; }
+
+  /* Description */
+  .desc-box { background: #0f1a0f; border: 1px solid #1a2e1a; border-radius: 6px; padding: 12px; font-size: 12px; color: #6ee7b7; line-height: 1.6; }
+
+  /* Notes */
+  .notes-area { width: 100%; background: #0f1a0f; border: 1px solid #1a2e1a; border-radius: 6px; padding: 10px 12px; font-size: 12px; color: #6ee7b7; line-height: 1.6; resize: vertical; min-height: 90px; font-family: inherit; outline: none; }
+  .notes-area:focus { border-color: #10b981; }
+  .notes-area::placeholder { color: #2d4a35; }
+  .save-btn { margin-top: 8px; background: #0a1f12; border: 1px solid #10b981; color: #10b981; font-size: 11px; padding: 5px 14px; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
+  .save-btn:hover { background: #10b981; color: #0a0f0a; }
+
+  /* Files */
+  .file-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+  .file-item { display: flex; align-items: center; gap: 8px; background: #0f1a0f; border: 1px solid #1a2e1a; border-radius: 5px; padding: 7px 10px; }
+  .file-icon { font-size: 14px; }
+  .file-name { font-size: 11px; color: #6ee7b7; flex: 1; }
+  .file-size { font-size: 10px; color: #2d4a35; }
+  .file-del { color: #2d4a35; cursor: pointer; font-size: 12px; }
+  .file-del:hover { color: #ef4444; }
+  .upload-zone { border: 1px dashed #1a2e1a; border-radius: 6px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.15s; }
+  .upload-zone:hover { border-color: #10b981; background: #0a1f12; }
+  .upload-zone-text { font-size: 11px; color: #2d4a35; }
+  .upload-zone-text span { color: #10b981; }
+</style>
+</head>
+<body>
+
+<div class="backdrop"></div>
+
+<div class="panel">
+
+  <!-- Header -->
+  <div class="panel-header">
+    <div class="panel-cat-bar"></div>
+    <div class="panel-header-info">
+      <div class="panel-title">Team Company Review of Objectives</div>
+      <div class="panel-meta">
+        <span class="panel-tag tag-cat">Recognition Day</span>
+        <span class="panel-tag tag-module">Self Leadership</span>
+      </div>
+    </div>
+    <div class="panel-close">✕</div>
+  </div>
+
+  <!-- Dates -->
+  <div class="panel-section">
+    <div class="section-label">Dates</div>
+    <div class="dates-row">
+      <div class="date-box">
+        <div class="date-box-label">Start</div>
+        <div class="date-box-value">Mar 23</div>
+        <div class="date-box-sub">Sunday</div>
+      </div>
+      <div class="date-box">
+        <div class="date-box-label">Due</div>
+        <div class="date-box-value">Mar 26</div>
+        <div class="date-box-sub">Wednesday · in 5 days</div>
+      </div>
+      <div class="date-box" style="border-color:#f59e0b33">
+        <div class="date-box-label">Time left</div>
+        <div class="date-box-value" style="color:#f59e0b">5 days</div>
+        <div class="date-box-sub" style="color:#f59e0b">Coming up soon</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="panel-section">
+    <div class="section-label">Progress</div>
+    <div class="progress-row">
+      <div class="progress-track">
+        <div class="progress-fill" id="progFill" style="width: 25%"></div>
+      </div>
+      <div class="progress-pct" id="progPct">25%</div>
+    </div>
+    <div class="progress-btns">
+      <div class="progress-btn" onclick="setProgress(0)">Not started</div>
+      <div class="progress-btn active" onclick="setProgress(25)">Just started</div>
+      <div class="progress-btn" onclick="setProgress(50)">Halfway</div>
+      <div class="progress-btn" onclick="setProgress(75)">Nearly done</div>
+      <div class="progress-btn" onclick="setProgress(100)">Complete ✓</div>
+    </div>
+  </div>
+
+  <!-- Assignment Details -->
+  <div class="panel-section">
+    <div class="section-label" style="display:flex;align-items:center;gap:6px">
+      <span>Assignment Details</span>
+      <span style="font-size:9px;color:#2d4a35;background:#0f1a0f;border:1px solid #1a2e1a;border-radius:3px;padding:1px 6px;text-transform:none;letter-spacing:0;font-weight:400">from module handbook</span>
+    </div>
+    <div style="background:#0f1a0f;border:1px solid #1a2e1a;border-radius:6px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #1a2e1a">
+        <div style="padding:10px 12px;border-right:1px solid #1a2e1a">
+          <div style="font-size:9px;color:#2d4a35;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Weighting</div>
+          <div style="font-size:14px;font-weight:700;color:#10b981">30%</div>
+          <div style="font-size:10px;color:#374151">of module grade</div>
+        </div>
+        <div style="padding:10px 12px">
+          <div style="font-size:9px;color:#2d4a35;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Format</div>
+          <div style="font-size:13px;font-weight:600;color:#6ee7b7">Team Presentation</div>
+          <div style="font-size:10px;color:#374151">In-person · 15 mins</div>
+        </div>
+      </div>
+      <div style="padding:10px 12px;border-bottom:1px solid #1a2e1a">
+        <div style="font-size:9px;color:#2d4a35;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Brief</div>
+        <div style="font-size:12px;color:#6ee7b7;line-height:1.6">
+          Each team must review progress against the company objectives set in Term 1. Present a critical analysis of what has been achieved, what has not, and why. Include individual contributions and reflections.
+        </div>
+      </div>
+      <div style="padding:10px 12px">
+        <div style="font-size:9px;color:#2d4a35;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Key Requirements</div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div style="display:flex;align-items:flex-start;gap:7px;font-size:11px;color:#4b7a5a">
+            <span style="color:#10b981;flex-shrink:0;margin-top:1px">›</span>Cover all objectives from Term 1 company plan
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:7px;font-size:11px;color:#4b7a5a">
+            <span style="color:#10b981;flex-shrink:0;margin-top:1px">›</span>Individual reflection on personal contribution
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:7px;font-size:11px;color:#4b7a5a">
+            <span style="color:#10b981;flex-shrink:0;margin-top:1px">›</span>Submit slides via Moodle before presentation
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="panel-section">
+    <div class="section-label">Your Notes on this Task</div>
+    <div class="desc-box">
+      Team review of our company objectives as part of the Self Leadership module. Involves assessing current progress against targets set at the start of the year and presenting findings to the team.
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="panel-section">
+    <div class="section-label">Notes</div>
+    <textarea class="notes-area" placeholder="Add your own notes here — key points, reminders, links..."></textarea>
+    <button class="save-btn">Save notes</button>
+  </div>
+
+  <!-- Files -->
+  <div class="panel-section">
+    <div class="section-label">Attachments</div>
+    <div class="file-list">
+      <div class="file-item">
+        <div class="file-icon">📄</div>
+        <div class="file-name">objectives-review-draft.docx</div>
+        <div class="file-size">42 KB</div>
+        <div class="file-del">✕</div>
+      </div>
+    </div>
+    <div class="upload-zone">
+      <div class="upload-zone-text">Drop files here or <span>browse to upload</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function setProgress(val) {
+    document.getElementById('progFill').style.width = val + '%';
+    document.getElementById('progPct').textContent = val + '%';
+    document.querySelectorAll('.progress-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
