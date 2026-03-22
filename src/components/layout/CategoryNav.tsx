@@ -1,29 +1,22 @@
 'use client'
-import { usePathname, useRouter } from 'next/navigation'
+import { useCategoryContext } from '@/context/CategoryContext'
 import type { Category } from '@/types/app'
 
 export default function CategoryNav({ categories, taskCounts }: {
   categories: Category[]
   taskCounts: Record<string, number>
 }) {
-  const pathname = usePathname()
-  const router = useRouter()
+  const { activeCategory, setActiveCategory } = useCategoryContext()
 
-  const isActive = (slug: string | null) => {
-    if (slug === null) return pathname.startsWith('/dashboard')
-    return pathname === `/category/${slug}`
-  }
-
-  const nav = (slug: string | null) => {
-    router.push(slug ? `/category/${slug}` : '/dashboard')
-  }
+  const isActive = (slug: string | null) =>
+    slug === null ? activeCategory === null : activeCategory?.slug === slug
 
   return (
     <div>
       <p className="text-[9px] uppercase tracking-widest text-emerald-950 font-semibold px-1 mb-2">Categories</p>
       {/* All Tasks */}
       <button
-        onClick={() => nav(null)}
+        onClick={() => setActiveCategory(null)}
         className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg mb-0.5 border text-left transition-all ${
           isActive(null)
             ? 'bg-emerald-950 border-cat-social'
@@ -36,7 +29,7 @@ export default function CategoryNav({ categories, taskCounts }: {
       {categories.map(cat => (
         <button
           key={cat.slug}
-          onClick={() => nav(cat.slug)}
+          onClick={() => setActiveCategory(cat)}
           className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg mb-0.5 border text-left transition-all ${
             isActive(cat.slug)
               ? 'border opacity-100'

@@ -1,7 +1,7 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { mapTask, mapCategory, mapAttachment } from '@/lib/mappers'
 import { CATEGORY_COLOURS } from '@/lib/constants'
-import Timeline from '@/components/timeline/Timeline'
+import DashboardClient from '@/components/dashboard/DashboardClient'
 import TaskPanel from '@/components/task-panel/TaskPanel'
 import type { DbCategory } from '@/types/database'
 import type { Task, Category, Attachment } from '@/types/app'
@@ -43,7 +43,7 @@ export default async function DashboardPage({
 
   return (
     <>
-      <Timeline tasks={tasks} categoryColourMap={colourMap} title="All Tasks — Timeline" />
+      <DashboardClient tasks={tasks} colourMap={colourMap} />
       {activeTask && <TaskPanel task={activeTask} category={activeCategory} attachments={attachments} />}
     </>
   )
