@@ -33,7 +33,9 @@ export default function Timeline({ tasks = [], categoryColourMap = {}, accent = 
   }, [])
 
   const innerWidth = (BASE_WIDTH * zoom) / 100
-  const positioned = assignCardPositions(tasks)
+  const positioned = assignCardPositions(tasks, innerWidth)
+  const maxLane = positioned.length > 0 ? Math.max(...positioned.map(p => p.lane)) : 0
+  const vertPad = 100 + maxLane * 90
 
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
@@ -43,13 +45,14 @@ export default function Timeline({ tasks = [], categoryColourMap = {}, accent = 
         <ZoomControls zoom={zoom} onZoom={setZoom} />
       </div>
       <div ref={containerRef} className="flex-1 overflow-x-auto overflow-y-hidden px-5 pb-5 flex items-center">
-        <div className="relative" style={{ minWidth: `${innerWidth}px`, width: '100%', paddingTop: '100px', paddingBottom: '100px' }}>
+        <div className="relative" style={{ minWidth: `${innerWidth}px`, width: '100%', paddingTop: `${vertPad}px`, paddingBottom: `${vertPad}px` }}>
           <TimelineAxis accent={accent} />
-          {positioned.map(({ position, ...task }) => (
+          {positioned.map(({ position, lane, ...task }) => (
             <TimelineCard
               key={task.id}
               task={task as Task}
               position={position}
+              lane={lane}
               colour={categoryColourMap[task.categoryId ?? ''] ?? accent}
             />
           ))}

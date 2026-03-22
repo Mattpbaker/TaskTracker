@@ -5,13 +5,16 @@ import TimelineStem from './TimelineStem'
 import { formatDueDate } from '@/lib/date-utils'
 import { dateToPercent } from './TimelineAxis'
 
+const LANE_HEIGHT = 90 // px per lane step
+
 interface Props {
   task: Task
   position: 'above' | 'below'
+  lane: number
   colour: string
 }
 
-export default function TimelineCard({ task, position, colour }: Props) {
+export default function TimelineCard({ task, position, lane, colour }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const pct = dateToPercent(task.dueDate)
@@ -20,10 +23,11 @@ export default function TimelineCard({ task, position, colour }: Props) {
 
   return (
     <div
-      className={`absolute -translate-x-1/2 flex flex-col items-center cursor-pointer group z-10 ${
-        position === 'above' ? 'bottom-[calc(50%+1px)]' : 'top-[calc(50%+1px)]'
-      }`}
-      style={{ left: `${pct}%` }}
+      className="absolute -translate-x-1/2 flex flex-col items-center cursor-pointer group z-10"
+      style={{
+        left: `${pct}%`,
+        [position === 'above' ? 'bottom' : 'top']: `calc(50% + 1px + ${lane * LANE_HEIGHT}px)`,
+      }}
     >
       {/* Dot on axis */}
       <div

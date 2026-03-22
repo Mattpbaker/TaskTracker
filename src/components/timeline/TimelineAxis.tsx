@@ -1,14 +1,4 @@
-import { COURSE_START, COURSE_END } from '@/lib/constants'
-
-const TOTAL_DAYS = Math.ceil(
-  (COURSE_END.getTime() - COURSE_START.getTime()) / (1000 * 60 * 60 * 24)
-)
-
-export function dateToPercent(dateStr: string): number {
-  const date = new Date(dateStr)
-  const elapsed = Math.ceil((date.getTime() - COURSE_START.getTime()) / (1000 * 60 * 60 * 24))
-  return Math.max(0, Math.min(100, (elapsed / TOTAL_DAYS) * 100))
-}
+export { dateToPercent } from '@/lib/timeline'
 
 export function todayPercent(): number {
   const today = new Date().toISOString().slice(0, 10)
