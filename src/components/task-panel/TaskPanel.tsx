@@ -1,20 +1,22 @@
 'use client'
 import { useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import type { Task, Category } from '@/types/app'
+import type { Task, Category, Attachment } from '@/types/app'
 import { CATEGORY_COLOURS } from '@/lib/constants'
 import TaskPanelHeader from './TaskPanelHeader'
 import TaskPanelDates from './TaskPanelDates'
 import TaskPanelDetails from './TaskPanelDetails'
 import TaskPanelProgress from './TaskPanelProgress'
 import TaskPanelNotes from './TaskPanelNotes'
+import TaskPanelAttachments from './TaskPanelAttachments'
 
 interface Props {
   task: Task
   category: Category | null
+  attachments?: Attachment[]
 }
 
-export default function TaskPanel({ task, category }: Props) {
+export default function TaskPanel({ task, category, attachments }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const colour = category ? CATEGORY_COLOURS[category.slug] ?? '#10b981' : '#10b981'
@@ -48,6 +50,7 @@ export default function TaskPanel({ task, category }: Props) {
         <TaskPanelDetails details={task.assignmentDetails} />
         <TaskPanelProgress taskId={task.id} initial={task.progress} colour={colour} />
         <TaskPanelNotes taskId={task.id} initial={task.notes} />
+        <TaskPanelAttachments taskId={task.id} initial={attachments ?? []} />
       </div>
     </>
   )

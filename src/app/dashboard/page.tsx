@@ -1,10 +1,10 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server'
-import { mapTask, mapCategory } from '@/lib/mappers'
+import { mapTask, mapCategory, mapAttachment } from '@/lib/mappers'
 import { CATEGORY_COLOURS } from '@/lib/constants'
 import Timeline from '@/components/timeline/Timeline'
 import TaskPanel from '@/components/task-panel/TaskPanel'
 import type { DbCategory } from '@/types/database'
-import type { Task, Category } from '@/types/app'
+import type { Task, Category, Attachment } from '@/types/app'
 
 export default async function DashboardPage({
   searchParams,
@@ -28,16 +28,23 @@ export default async function DashboardPage({
 
   let activeTask: Task | null = null
   let activeCategory: Category | null = null
+  let attachments: Attachment[] = []
 
   if (activeTaskId) {
     activeTask = tasks.find(t => t.id === activeTaskId) ?? null
     activeCategory = categories.find(c => c.id === activeTask?.categoryId) ?? null
   }
 
+  if (activeTask) {
+    const { data: rawAtt } = await supabase
+      .from('attachments').select('*').eq('task_id', activeTask.id)
+    attachments = (rawAtt ?? []).map(mapAttachment)
+  }
+
   return (
     <>
       <Timeline tasks={tasks} categoryColourMap={colourMap} title="All Tasks — Timeline" />
-      {activeTask && <TaskPanel task={activeTask} category={activeCategory} />}
+      {activeTask && <TaskPanel task={activeTask} category={activeCategory} attachments={attachments} />}
     </>
   )
 }
