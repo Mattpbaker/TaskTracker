@@ -22,10 +22,10 @@ export default function TaskPanel({ task, category }: Props) {
   const close = () => router.push(pathname)
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') close() }
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') router.push(pathname) }
     document.addEventListener('keydown', handler)
     return () => document.removeEventListener('keydown', handler)
-  }, [pathname])
+  }, [pathname, router])
 
   return (
     <>

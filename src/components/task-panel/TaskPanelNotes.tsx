@@ -7,12 +7,11 @@ export default function TaskPanelNotes({ taskId, initial }: { taskId: string; in
   const [saved, setSaved] = useState(false)
   const [isPending, startTransition] = useTransition()
 
-  const save = () => {
-    startTransition(async () => {
-      await updateNotesAction(taskId, notes)
-      setSaved(true)
-      setTimeout(() => setSaved(false), 2000)
-    })
+  const save = async () => {
+    setSaved(false)
+    startTransition(() => updateNotesAction(taskId, notes))
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
   }
 
   return (

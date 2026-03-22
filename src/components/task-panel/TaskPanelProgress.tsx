@@ -39,7 +39,7 @@ export default function TaskPanelProgress({ taskId, initial, colour }: {
             key={label}
             onClick={() => pick(label)}
             disabled={isPending}
-            className={`text-[11px] px-2.5 py-1 rounded border transition-all ${
+            className={`text-[11px] px-2.5 py-1 rounded border transition-all ${isPending ? 'opacity-50 cursor-not-allowed' : ''} ${
               labelFor(progress) === label
                 ? 'border-cat-social text-cat-social bg-emerald-950'
                 : 'border-border text-emerald-900 bg-surface hover:border-cat-social hover:text-emerald-300'
