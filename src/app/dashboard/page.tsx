@@ -9,6 +9,7 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ task?: string }>
 }) {
+  const { task: activeTaskId } = await searchParams
   const supabase = await createSupabaseServerClient()
   const [{ data: rawTasks }, { data: rawCats }] = await Promise.all([
     supabase.from('tasks').select('*').eq('is_template', false).order('due_date'),
