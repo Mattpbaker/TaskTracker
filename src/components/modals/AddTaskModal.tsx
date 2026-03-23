@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { createTaskAction } from '@/actions/tasks'
 import type { Category } from '@/types/app'
@@ -12,6 +12,7 @@ export default function AddTaskModal({
   onClose: () => void
 }) {
   const dialogRef = useRef<HTMLDivElement>(null)
+  const [error, setError] = useState<string | null>(null)
 
   // Escape key dismissal + focus trap
   useEffect(() => {
@@ -37,8 +38,13 @@ export default function AddTaskModal({
   }, [onClose])
 
   async function handleSubmit(formData: FormData) {
-    await createTaskAction(formData)
-    onClose()
+    try {
+      setError(null)
+      await createTaskAction(formData)
+      onClose()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add task')
+    }
   }
 
   return createPortal(
@@ -115,6 +121,9 @@ export default function AddTaskModal({
               Add Task →
             </button>
           </div>
+          {error && (
+            <p className="text-[11px] text-red-500 mt-2 text-center">{error}</p>
+          )}
         </form>
       </div>
     </div>,
