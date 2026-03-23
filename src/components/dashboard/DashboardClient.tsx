@@ -1,8 +1,10 @@
 'use client'
 import { useCategoryContext } from '@/context/CategoryContext'
+import { useSearchContext } from '@/context/SearchContext'
 import { computeCategoryInsights } from '@/lib/stats'
 import { CATEGORY_COLOURS } from '@/lib/constants'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useOptimistic, startTransition } from 'react'
+import { updateProgressAction } from '@/actions/tasks'
 import ViewSwitcher, { type ViewMode } from '@/components/timeline/ViewSwitcher'
 import Timeline from '@/components/timeline/Timeline'
 import WeeklyView from '@/components/timeline/views/WeeklyView'
@@ -22,31 +24,59 @@ export default function DashboardClient({
   categories,
 }: {
   tasks: Task[]
-  colourMap: Record<string, string>   // keyed by category ID — from DashboardPage
+  colourMap: Record<string, string>
   categories: Category[]
 }) {
   const { activeCategory } = useCategoryContext()
+  const { searchQuery, setSearchQuery } = useSearchContext()
   const [viewMode, setViewMode] = useState<ViewMode>('weekly')
 
+  const [optimisticTasks, dispatchOptimistic] = useOptimistic(
+    tasks,
+    (state: Task[], action: { type: 'update-progress'; id: string; progress: number }) => {
+      if (action.type === 'update-progress') {
+        return state.map(t => t.id === action.id ? { ...t, progress: action.progress } : t)
+      }
+      return state
+    }
+  )
+
+  // Restore saved view mode
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY) as ViewMode | null
     if (saved) setViewMode(saved)
   }, [])
+
+  // Reset search when category changes
+  useEffect(() => {
+    setSearchQuery('')
+  }, [activeCategory, setSearchQuery])
 
   const handleViewChange = (v: ViewMode) => {
     setViewMode(v)
     localStorage.setItem(STORAGE_KEY, v)
   }
 
-  const displayTasks = activeCategory
-    ? tasks.filter(t => t.categoryId === activeCategory.id)
-    : tasks
+  // Called by ProgressPopup in WeeklyView — must be inside startTransition
+  const handleProgressChange = (id: string, progress: number) => {
+    startTransition(() => {
+      dispatchOptimistic({ type: 'update-progress', id, progress })
+      updateProgressAction(id, progress)
+    })
+  }
+
+  // Apply category + search filters to optimistic task list
+  const displayTasks = optimisticTasks
+    .filter(t => !activeCategory || t.categoryId === activeCategory.id)
+    .filter(t =>
+      !searchQuery ||
+      t.title.toLowerCase().includes(searchQuery.toLowerCase())
+    )
 
   const accent = activeCategory
     ? (CATEGORY_COLOURS[activeCategory.slug] ?? activeCategory.colour)
     : '#10b981'
 
-  // Task-ID-keyed map for new views
   const taskColourMap: Record<string, string> = Object.fromEntries(
     displayTasks.map(t => [
       t.id,
@@ -54,7 +84,6 @@ export default function DashboardClient({
     ])
   )
 
-  // Category-ID-keyed map for existing Timeline (horizontal) component
   const catColourMap: Record<string, string> = activeCategory
     ? Object.fromEntries(displayTasks.map(t => [t.categoryId ?? '', accent]))
     : colourMap
@@ -75,7 +104,16 @@ export default function DashboardClient({
   return (
     <>
       {categorySection}
-      {viewMode === 'weekly'     && <WeeklyView   tasks={displayTasks} taskColourMap={taskColourMap} accent={accent} extra={switcher} />}
+      {viewMode === 'weekly'     && (
+        <WeeklyView
+          tasks={displayTasks}
+          taskColourMap={taskColourMap}
+          accent={accent}
+          extra={switcher}
+          onProgressChange={handleProgressChange}
+          searchQuery={searchQuery}
+        />
+      )}
       {viewMode === 'horizontal' && <Timeline     tasks={displayTasks} categoryColourMap={catColourMap} accent={accent} extra={switcher} />}
       {viewMode === 'swimlane'   && <SwimlaneView tasks={displayTasks} taskColourMap={taskColourMap} accent={accent} extra={switcher} categories={categories} />}
       {viewMode === 'vertical'   && <VerticalView tasks={displayTasks} taskColourMap={taskColourMap} accent={accent} extra={switcher} />}
