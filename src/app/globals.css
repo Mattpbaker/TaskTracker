@@ -3,21 +3,33 @@
 @tailwind utilities;
 
 :root {
-  --bg: #0a0f0a;
+  --background: #ffffff;
+  --surface:    #fafaf9;
+  --border:     #e8e8e5;
+  --text-primary:   #111111;
+  --text-secondary: #555555;
+  --text-muted:     #aaaaaa;
+}
+
+.dark {
+  --background: #0a0f0a;
+  --surface:    #0f1a0f;
+  --border:     #1a2e1a;
+  --text-primary:   #d1fae5;
+  --text-secondary: #86a892;
+  --text-muted:     #4b7a5a;
 }
 
 body {
-  background-color: var(--bg);
-  color: #d1fae5;
+  background-color: var(--background);
+  color: var(--text-primary);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #0f1a0f; }
-::-webkit-scrollbar-thumb { background: #1a2e1a; border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
 @keyframes slide-in-from-right {
   from { transform: translateX(100%); opacity: 0; }

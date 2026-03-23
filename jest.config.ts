@@ -4,7 +4,7 @@ const config: Config = {
   transform: { '^.+\\.tsx?$': ['ts-jest', { tsconfig: { jsx: 'react-jsx' } }] },
   testMatch: ['<rootDir>/src/__tests__/**/*.test.ts?(x)'],
   moduleNameMapper: { '^@/(.*)$': '<rootDir>/src/$1' },
-  testPathIgnorePatterns: ['/node_modules/', '/.worktrees/'],
-  watchPathIgnorePatterns: ['/.worktrees/'],
+  roots: ['<rootDir>/src'],
+  watchPathIgnorePatterns: ['<rootDir>/.worktrees/'],
 }
 export default config

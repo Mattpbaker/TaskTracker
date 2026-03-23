@@ -1,8 +1,14 @@
 import type { Config } from 'tailwindcss'
+import defaultTheme from 'tailwindcss/defaultTheme'
+
 const config: Config = {
+  darkMode: 'class',
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-geist)', ...defaultTheme.fontFamily.sans],
+      },
       colors: {
         'cat-social':   '#10b981',
         'cat-recog':    '#6366f1',
@@ -11,9 +17,12 @@ const config: Config = {
         'cat-report':   '#f59e0b',
         'cat-video':    '#a3e635',
         'cat-working':  '#8b5cf6',
-        background:     '#0a0f0a',
-        surface:        '#0f1a0f',
-        border:         '#1a2e1a',
+        background: 'var(--background)',
+        surface:    'var(--surface)',
+        border:     'var(--border)',
+        primary:    'var(--text-primary)',
+        secondary:  'var(--text-secondary)',
+        muted:      'var(--text-muted)',
       },
     },
   },
