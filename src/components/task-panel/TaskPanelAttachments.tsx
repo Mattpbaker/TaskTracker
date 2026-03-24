@@ -49,18 +49,18 @@ export default function TaskPanelAttachments({ taskId, initial }: {
 
   return (
     <div className="px-5 py-4">
-      <p className="text-[10px] uppercase tracking-widest text-emerald-950 font-semibold mb-3">Attachments</p>
+      <p className="text-[10px] uppercase tracking-widest text-muted font-semibold mb-3">Attachments</p>
       {attachments.length > 0 && (
         <div className="flex flex-col gap-1.5 mb-3">
           {attachments.map(att => (
             <div key={att.id} className="flex items-center gap-2 bg-surface border border-border rounded-lg px-3 py-2">
               <span className="text-sm">📄</span>
-              <span className="text-[11px] text-emerald-300 flex-1 truncate">{att.fileName}</span>
-              <span className="text-[10px] text-emerald-950 flex-shrink-0">{formatBytes(att.fileSize)}</span>
+              <span className="text-[11px] text-primary flex-1 truncate">{att.fileName}</span>
+              <span className="text-[10px] text-muted flex-shrink-0">{formatBytes(att.fileSize)}</span>
               <button
                 onClick={() => remove(att)}
                 disabled={isPending}
-                className="text-emerald-950 hover:text-red-400 text-xs ml-1 disabled:opacity-50"
+                className="text-muted hover:text-red-400 text-xs ml-1 disabled:opacity-50"
               >✕</button>
             </div>
           ))}
@@ -72,7 +72,7 @@ export default function TaskPanelAttachments({ taskId, initial }: {
         onDragOver={e => e.preventDefault()}
         onDrop={e => { e.preventDefault(); upload(e.dataTransfer.files) }}
       >
-        <p className="text-[11px] text-emerald-950">
+        <p className="text-[11px] text-muted">
           {uploading ? 'Uploading…' : <><span>Drop files here or </span><span className="text-cat-social">browse to upload</span></>}
         </p>
         <input ref={inputRef} type="file" multiple className="hidden" onChange={e => upload(e.target.files)} />

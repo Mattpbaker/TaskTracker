@@ -16,12 +16,12 @@ export default function TaskPanelNotes({ taskId, initial }: { taskId: string; in
 
   return (
     <div className="px-5 py-4 border-b border-border">
-      <p className="text-[10px] uppercase tracking-widest text-emerald-950 font-semibold mb-3">Notes</p>
+      <p className="text-[10px] uppercase tracking-widest text-muted font-semibold mb-3">Notes</p>
       <textarea
         value={notes}
         onChange={e => { setNotes(e.target.value); setSaved(false) }}
         placeholder="Add your own notes here — key points, reminders, links..."
-        className="w-full bg-surface border border-border rounded-lg px-3 py-2.5 text-xs text-emerald-300 leading-relaxed resize-y min-h-[90px] focus:outline-none focus:border-cat-social placeholder:text-emerald-950"
+        className="w-full bg-surface border border-border rounded-lg px-3 py-2.5 text-xs text-primary leading-relaxed resize-y min-h-[90px] focus:outline-none focus:border-cat-social placeholder:text-muted"
       />
       <button
         onClick={save}

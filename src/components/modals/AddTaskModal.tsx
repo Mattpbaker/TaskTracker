@@ -49,7 +49,7 @@ export default function AddTaskModal({
 
   return createPortal(
     <div
-      className="fixed inset-0 bg-black/40 z-50 flex items-end justify-center pb-20"
+      className="fixed inset-0 bg-black/55 backdrop-blur-[2px] z-50 flex items-end justify-center pb-20"
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
       role="dialog"
       aria-modal="true"
@@ -57,7 +57,7 @@ export default function AddTaskModal({
     >
       <div
         ref={dialogRef}
-        className="bg-background border border-border rounded-xl p-5 w-[400px] shadow-2xl"
+        className="bg-background border border-border rounded-xl p-5 w-[400px] shadow-2xl modal-enter"
       >
         <h2 className="text-[14px] font-bold text-primary mb-4">Add Task</h2>
 

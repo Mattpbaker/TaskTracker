@@ -26,7 +26,7 @@ export default function TaskPanelProgress({ taskId, initial, colour }: {
 
   return (
     <div className="px-5 py-4 border-b border-border">
-      <p className="text-[10px] uppercase tracking-widest text-emerald-950 font-semibold mb-3">Progress</p>
+      <p className="text-[10px] uppercase tracking-widest text-muted font-semibold mb-3">Progress</p>
       <div className="flex items-center gap-3 mb-3">
         <div className="flex-1 h-1.5 bg-border rounded-full overflow-hidden">
           <div className="h-full rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: colour }} />
@@ -42,7 +42,7 @@ export default function TaskPanelProgress({ taskId, initial, colour }: {
             className={`text-[11px] px-2.5 py-1 rounded border transition-all ${isPending ? 'opacity-50 cursor-not-allowed' : ''} ${
               labelFor(progress) === label
                 ? 'border-cat-social text-cat-social bg-emerald-950'
-                : 'border-border text-emerald-900 bg-surface hover:border-cat-social hover:text-emerald-300'
+                : 'border-border text-muted bg-surface hover:border-cat-social hover:text-primary'
             }`}
           >
             {label}

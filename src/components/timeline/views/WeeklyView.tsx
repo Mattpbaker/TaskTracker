@@ -117,7 +117,7 @@ export default function WeeklyView({
                     <span className="text-[10px] text-muted">{week.tasks.length}</span>
                   </div>
                   <p className="text-[9px] text-muted mb-2">{week.range.label}</p>
-                  <div className="h-1 bg-border rounded-full overflow-hidden">
+                  <div className="h-1 bg-[#d4d4d0] dark:bg-border rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-300"
                       style={{ width: `${pct}%`, background: accent }}
@@ -166,7 +166,7 @@ export default function WeeklyView({
                             })}
                           </span>
                           {/* Progress bar */}
-                          <div className="flex-1 h-1 bg-border rounded-full overflow-hidden">
+                          <div className="flex-1 h-1 bg-[#d4d4d0] dark:bg-border rounded-full overflow-hidden">
                             <div
                               className="h-full rounded-full transition-all duration-200"
                               style={{ width: `${task.progress}%`, background: colour }}

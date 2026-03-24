@@ -34,7 +34,7 @@ export default function TaskPanel({ task, category, attachments }: Props) {
       {/* Backdrop */}
       <div className="fixed inset-0 z-40" onClick={close} />
       {/* Panel */}
-      <div className="animate-in fixed right-0 top-0 h-full w-[420px] bg-[#0b140b] border-l border-border z-50 overflow-y-auto shadow-2xl flex flex-col">
+      <div className="animate-in fixed right-0 top-0 h-full w-[420px] bg-background border-l border-border z-50 overflow-y-auto shadow-2xl flex flex-col">
         <TaskPanelHeader
           title={task.title}
           category={category?.name ?? null}

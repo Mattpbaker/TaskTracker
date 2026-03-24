@@ -19,18 +19,29 @@ interface Props { accent?: string }
 export default function TimelineAxis({ accent = '#10b981' }: Props) {
   const todayPct = todayPercent()
   return (
-    <div className="relative h-0.5 mx-5 my-0" style={{
-      background: `linear-gradient(to right, #1a2e1a, ${accent} 10%, ${accent} 90%, #1a2e1a)`
-    }}>
-      {/* Today marker */}
+    <div className="relative mx-5 my-0" style={{ height: '2px', background: 'var(--border)' }}>
+      {/* Accent overlay on the axis */}
+      <div
+        className="absolute inset-0 opacity-60"
+        style={{ background: `linear-gradient(to right, transparent 0%, ${accent} 20%, ${accent} 80%, transparent 100%)` }}
+      />
+
+      {/* Today marker — full-height indicator rendered by the parent, but axis label here */}
       <div
         className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10"
         style={{ left: `${todayPct}%` }}
       >
-        <div className="w-px h-10 -translate-y-5" style={{ background: `${accent}80` }} />
-        <span className="text-[9px] uppercase tracking-wide mt-1" style={{ color: accent }}>Today</span>
+        {/* Tall line rendered by absolute positioning in the containing block */}
+        <div className="w-px h-10 -translate-y-5" style={{ background: `${accent}90` }} />
+        <div
+          className="mt-2 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide whitespace-nowrap"
+          style={{ background: `${accent}18`, color: accent, border: `1px solid ${accent}40` }}
+        >
+          Today
+        </div>
       </div>
-      {/* Ticks */}
+
+      {/* Tick marks */}
       {TICK_DATES.map(tick => (
         <div
           key={tick.date}
@@ -38,7 +49,7 @@ export default function TimelineAxis({ accent = '#10b981' }: Props) {
           style={{ left: `${dateToPercent(tick.date)}%` }}
         >
           <div className="w-px h-3 bg-border" />
-          <span className="text-[9px] text-emerald-950 mt-1.5 whitespace-nowrap">{tick.label}</span>
+          <span className="text-[9px] text-muted mt-1.5 whitespace-nowrap">{tick.label}</span>
         </div>
       ))}
     </div>

@@ -24,7 +24,7 @@ export default function VerticalView({ tasks, taskColourMap, accent = '#10b981',
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
       <div className="flex items-center gap-3 px-5 py-3 border-b border-border shrink-0">
-        <span className="text-[11px] uppercase tracking-widest text-emerald-900 font-semibold">Vertical Timeline</span>
+        <span className="text-[11px] uppercase tracking-widest text-muted font-semibold">Vertical Timeline</span>
         {extra}
       </div>
       <div className="flex-1 overflow-y-auto px-6 py-4">
@@ -48,7 +48,7 @@ export default function VerticalView({ tasks, taskColourMap, accent = '#10b981',
                 {showMonthHeader && (
                   <div className="relative flex justify-center my-6">
                     <span className="relative z-10 px-4 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full border"
-                      style={{ color: accent, borderColor: `${accent}40`, background: '#0a0f0a' }}>
+                      style={{ color: accent, borderColor: `${accent}40`, background: 'var(--surface)' }}>
                       {MONTH_LABELS[month] ?? month}
                     </span>
                   </div>
@@ -69,11 +69,11 @@ export default function VerticalView({ tasks, taskColourMap, accent = '#10b981',
                       style={{ borderColor: `${colour}40` }}>
                       <div className="flex items-center gap-1.5 mb-1">
                         <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: colour }} />
-                        <span className={`text-[11px] font-semibold leading-tight line-clamp-2 ${isDone ? 'line-through text-emerald-950' : 'text-emerald-100'}`}>
+                        <span className={`text-[11px] font-semibold leading-tight line-clamp-2 ${isDone ? 'line-through text-muted' : 'text-primary'}`}>
                           {isDone && '✓ '}{task.title}
                         </span>
                       </div>
-                      <p className="text-[10px] text-emerald-900 mb-1.5">{formatDueDate(task.dueDate, task.dueTime)}</p>
+                      <p className="text-[10px] text-secondary mb-1.5">{formatDueDate(task.dueDate, task.dueTime)}</p>
                       {task.module && (
                         <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 inline-block mb-1.5">
                           {task.module}
@@ -86,7 +86,7 @@ export default function VerticalView({ tasks, taskColourMap, accent = '#10b981',
                   </div>
                   <div className="w-12 flex justify-center shrink-0 z-10">
                     <div className="w-3 h-3 rounded-full border-2" style={{
-                      background: '#0a0f0a', borderColor: colour, boxShadow: `0 0 8px ${colour}66`,
+                      background: 'var(--surface)', borderColor: colour, boxShadow: `0 0 8px ${colour}66`,
                     }} />
                   </div>
                   <div className="w-[calc(50%-24px)]" />

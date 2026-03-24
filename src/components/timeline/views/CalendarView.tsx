@@ -41,8 +41,8 @@ export default function CalendarView({ tasks, taskColourMap, accent = '#10b981',
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
       <div className="flex items-center gap-3 px-5 py-3 border-b border-border shrink-0">
-        <span className="text-[11px] uppercase tracking-widest text-emerald-900 font-semibold">Calendar</span>
-        <span className="text-[11px] text-emerald-950">Mar 21 → May 14 2026</span>
+        <span className="text-[11px] uppercase tracking-widest text-muted font-semibold">Calendar</span>
+        <span className="text-[11px] text-muted">Mar 21 → May 14 2026</span>
         {extra}
       </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-5">
@@ -51,11 +51,11 @@ export default function CalendarView({ tasks, taskColourMap, accent = '#10b981',
           return (
             <div key={name} className="bg-surface rounded-xl border border-border overflow-hidden">
               <div className="px-4 py-3 border-b border-border">
-                <h3 className="text-sm font-bold text-emerald-200">{name}</h3>
+                <h3 className="text-sm font-bold text-primary">{name}</h3>
               </div>
               <div className="grid grid-cols-7">
                 {DAY_LABELS.map(d => (
-                  <div key={d} className="px-2 py-1.5 text-[9px] text-emerald-950 text-center uppercase tracking-wide border-b border-border">
+                  <div key={d} className="px-2 py-1.5 text-[9px] text-muted text-center uppercase tracking-wide border-b border-border">
                     {d}
                   </div>
                 ))}
@@ -73,7 +73,7 @@ export default function CalendarView({ tasks, taskColourMap, accent = '#10b981',
                   return (
                     <div key={ds} className={`min-h-[72px] p-1.5 border-b border-r border-border flex flex-col ${isOutOfRange ? 'opacity-30' : ''}`}>
                       <div className="flex justify-end mb-1">
-                        <span className={`text-[10px] font-medium w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'text-background font-bold' : 'text-emerald-800'}`}
+                        <span className={`text-[10px] font-medium w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'text-background font-bold' : 'text-secondary'}`}
                           style={isToday ? { background: accent } : {}}>
                           {date.getDate()}
                         </span>
@@ -89,7 +89,7 @@ export default function CalendarView({ tasks, taskColourMap, accent = '#10b981',
                           )
                         })}
                         {overflow > 0 && (
-                          <span className="text-[9px] text-emerald-950 pl-1">+{overflow} more</span>
+                          <span className="text-[9px] text-muted pl-1">+{overflow} more</span>
                         )}
                       </div>
                     </div>

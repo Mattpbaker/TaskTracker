@@ -16,8 +16,8 @@ export default function SwimlaneView({ tasks, taskColourMap, accent = '#10b981',
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
       <div className="flex items-center gap-3 px-5 py-3 border-b border-border shrink-0">
-        <span className="text-[11px] uppercase tracking-widest text-emerald-900 font-semibold">Swimlane</span>
-        <span className="text-[11px] text-emerald-950">Mar 21 → May 14 · 55 days</span>
+        <span className="text-[11px] uppercase tracking-widest text-muted font-semibold">Swimlane</span>
+        <span className="text-[11px] text-secondary">Mar 21 → May 14 · 55 days</span>
         {extra}
       </div>
       <div className="flex-1 overflow-x-auto overflow-y-auto">
@@ -32,7 +32,7 @@ export default function SwimlaneView({ tasks, taskColourMap, accent = '#10b981',
               return (
                 <div key={catId} className="h-16 flex items-center gap-2 px-3 border-b border-border">
                   <div className="w-2 h-2 rounded-full shrink-0" style={{ background: catColour }} />
-                  <span className="text-[10px] text-emerald-800 leading-tight line-clamp-2">{catName}</span>
+                  <span className="text-[10px] text-secondary leading-tight line-clamp-2">{catName}</span>
                 </div>
               )
             })}
@@ -44,7 +44,7 @@ export default function SwimlaneView({ tasks, taskColourMap, accent = '#10b981',
               {TICK_DATES.map(d => (
                 <div key={d} className="absolute top-0 h-full flex items-end pb-1"
                   style={{ left: `${dateToPercent(d)}%`, transform: 'translateX(-50%)' }}>
-                  <span className="text-[9px] text-emerald-950 whitespace-nowrap">
+                  <span className="text-[9px] text-muted whitespace-nowrap">
                     {new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                   </span>
                 </div>
@@ -57,7 +57,7 @@ export default function SwimlaneView({ tasks, taskColourMap, accent = '#10b981',
               const laneTasks = tasks.filter(t => t.categoryId === catId)
               return (
                 <div key={catId} className="relative h-16 border-b border-border"
-                  style={{ background: laneIdx % 2 === 0 ? 'transparent' : '#0d150d' }}>
+                  style={{ background: laneIdx % 2 === 0 ? 'transparent' : 'var(--surface)' }}>
                   <div className="absolute top-0 h-full w-px pointer-events-none"
                     style={{ left: `${todayPct}%`, background: `${accent}30` }} />
                   {laneTasks.map(task => {

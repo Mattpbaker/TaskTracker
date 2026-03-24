@@ -15,9 +15,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={geist.variable}>
-      {/* dangerouslySetInnerHTML script must be direct child of <html>, before <body>,
-          with NO async/defer — it must run synchronously before paint */}
-      <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      <head>
+        {/* Runs synchronously before first paint to apply dark class — must be sync, no defer/async */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>{children}</body>
     </html>
   )

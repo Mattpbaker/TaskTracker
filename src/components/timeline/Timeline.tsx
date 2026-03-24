@@ -1,12 +1,13 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import type { Task } from '@/types/app'
-import { assignCardPositions } from '@/lib/timeline'
+import { assignCardPositions, CARD_HALF_WIDTH_PX } from '@/lib/timeline'
 import TimelineAxis from './TimelineAxis'
 import TimelineCard from './TimelineCard'
 import ZoomControls from './ZoomControls'
 
 const BASE_WIDTH = 900
+const LANE_HEIGHT = 90
 
 interface Props {
   tasks?: Task[]
@@ -36,18 +37,30 @@ export default function Timeline({ tasks = [], categoryColourMap = {}, accent = 
   const innerWidth = (BASE_WIDTH * zoom) / 100
   const positioned = assignCardPositions(tasks, innerWidth)
   const maxLane = positioned.length > 0 ? Math.max(...positioned.map(p => p.lane)) : 0
-  const vertPad = 100 + maxLane * 90
+  // Extra 40px per lane for card height + padding; base 120px for axis labels
+  const vertPad = 120 + maxLane * LANE_HEIGHT
+
+  // Suppress unused import warning — CARD_HALF_WIDTH_PX is imported to keep timeline.ts in sync
+  void CARD_HALF_WIDTH_PX
 
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
       <div className="flex items-center gap-3 px-5 py-3 border-b border-border">
-        <span className="text-[11px] uppercase tracking-widest text-emerald-900 font-semibold">{title}</span>
-        <span className="text-[11px] text-emerald-950">Mar 21 → May 14 · 54 days</span>
+        <span className="text-[11px] uppercase tracking-widest text-muted font-semibold">{title}</span>
+        <span className="text-[11px] text-muted">Mar 21 → May 14 · 54 days</span>
         <ZoomControls zoom={zoom} onZoom={setZoom} />
         {extra}
       </div>
       <div ref={containerRef} className="flex-1 overflow-x-auto overflow-y-hidden px-5 pb-5 flex items-center">
-        <div className="relative" style={{ minWidth: `${innerWidth}px`, width: '100%', paddingTop: `${vertPad}px`, paddingBottom: `${vertPad}px` }}>
+        <div
+          className="relative"
+          style={{
+            minWidth: `${innerWidth}px`,
+            width: '100%',
+            paddingTop: `${vertPad}px`,
+            paddingBottom: `${vertPad}px`,
+          }}
+        >
           <TimelineAxis accent={accent} />
           {positioned.map(({ position, lane, ...task }) => (
             <TimelineCard

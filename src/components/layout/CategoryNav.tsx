@@ -13,18 +13,18 @@ export default function CategoryNav({ categories, taskCounts }: {
 
   return (
     <div>
-      <p className="text-[9px] uppercase tracking-widest text-emerald-950 font-semibold px-1 mb-2">Categories</p>
+      <p className="text-[9px] uppercase tracking-widest text-muted font-semibold px-1 mb-2">Categories</p>
       {/* All Tasks */}
       <button
         onClick={() => setActiveCategory(null)}
         className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg mb-0.5 border text-left transition-all ${
           isActive(null)
-            ? 'bg-emerald-950 border-cat-social'
+            ? 'bg-surface border-cat-social'
             : 'border-transparent hover:bg-surface'
         }`}
       >
         <div className="w-2 h-2 rounded-full bg-cat-social" />
-        <span className={`text-xs ${isActive(null) ? 'text-emerald-300' : 'text-emerald-800'}`}>All Tasks</span>
+        <span className={`text-xs ${isActive(null) ? 'text-primary' : 'text-secondary'}`}>All Tasks</span>
       </button>
       {categories.map(cat => (
         <button
@@ -40,11 +40,11 @@ export default function CategoryNav({ categories, taskCounts }: {
             : undefined}
         >
           <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: cat.colour }} />
-          <span className={`text-xs flex-1 leading-tight ${isActive(cat.slug) ? 'text-emerald-200' : 'text-emerald-800'}`}>
+          <span className={`text-xs flex-1 leading-tight ${isActive(cat.slug) ? 'text-primary' : 'text-secondary'}`}>
             {cat.name}
           </span>
           {taskCounts[cat.id] !== undefined && (
-            <span className="text-[10px] text-emerald-950 bg-border rounded px-1">
+            <span className="text-[10px] text-secondary bg-surface border border-border rounded px-1.5 font-medium">
               {taskCounts[cat.id]}
             </span>
           )}

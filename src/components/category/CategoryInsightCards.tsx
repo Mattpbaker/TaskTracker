@@ -12,8 +12,8 @@ export default function CategoryInsightCards({ insights, colour }: { insights: C
     <div className="flex gap-2.5 px-6 py-3 border-b border-border">
       {cards.map(card => (
         <div key={card.label} className="flex-1 bg-surface border border-border rounded-lg px-3 py-2.5">
-          <div className="text-xl font-bold" style={{ color: card.colour }}>{card.value}</div>
-          <div className="text-[9px] uppercase tracking-wide text-emerald-950">{card.label}</div>
+          <div className="text-2xl font-black" style={{ color: card.colour }}>{card.value}</div>
+          <div className="text-[9px] uppercase tracking-wide text-secondary">{card.label}</div>
         </div>
       ))}
     </div>

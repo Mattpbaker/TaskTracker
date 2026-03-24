@@ -3,8 +3,8 @@ import { daysUntilCourseEnd } from '@/lib/date-utils'
 export default function DaysRemainingBadge() {
   const days = daysUntilCourseEnd()
   return (
-    <span className="text-xs text-amber-400 bg-amber-950 border border-amber-900 rounded px-2 py-1">
-      ⚡ {days} days left
+    <span className="text-[11px] font-semibold text-cat-social border border-cat-social/30 bg-cat-social/8 rounded-full px-2.5 py-1 tabular-nums">
+      {days}d left
     </span>
   )
 }

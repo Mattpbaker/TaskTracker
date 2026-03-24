@@ -12,12 +12,12 @@ const STATS: { key: keyof SidebarStats; label: string; colour: string }[] = [
 export default function SidebarStats({ stats }: { stats: SidebarStats }) {
   return (
     <div className="mb-5">
-      <p className="text-[9px] uppercase tracking-widest text-emerald-950 font-semibold px-1 mb-2">Overview</p>
+      <p className="text-[9px] uppercase tracking-widest text-muted font-semibold px-1 mb-2">Overview</p>
       {STATS.map(({ key, label, colour }) => (
         <div key={key} className="flex items-center justify-between px-2 py-1.5 rounded-md hover:bg-surface">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: colour }} />
-            <span className="text-xs text-emerald-800">{label}</span>
+            <span className="text-xs text-secondary">{label}</span>
           </div>
           <span className="text-sm font-bold" style={{ color: colour }}>{stats[key]}</span>
         </div>
