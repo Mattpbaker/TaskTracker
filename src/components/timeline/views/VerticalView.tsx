@@ -1,4 +1,5 @@
 'use client'
+import { useRouter, usePathname } from 'next/navigation'
 import { formatDueDate } from '@/lib/date-utils'
 import type { ViewProps } from './types'
 
@@ -14,6 +15,8 @@ const MONTH_LABELS: Record<string, string> = {
 }
 
 export default function VerticalView({ tasks, taskColourMap, accent = '#10b981', extra }: ViewProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const sorted = [...tasks].sort((a, b) => a.dueDate.localeCompare(b.dueDate))
   const todayStr = localDateStr()
   const firstUpcomingId = sorted.find(t => t.dueDate >= todayStr)?.id ?? null
@@ -65,8 +68,9 @@ export default function VerticalView({ tasks, taskColourMap, accent = '#10b981',
                 <div className={`relative flex items-center mb-6 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
                   <div className={`w-[calc(50%-24px)] ${isLeft ? 'pr-4' : 'pl-4'}`}
                     style={{ opacity: isPast ? 0.65 : 1 }}>
-                    <div className="bg-surface border border-border rounded-lg p-3 transition-all"
-                      style={{ borderColor: `${colour}40` }}>
+                    <div className="bg-surface border border-border rounded-lg p-3 transition-all cursor-pointer hover:shadow-sm"
+                      style={{ borderColor: `${colour}40` }}
+                      onClick={() => router.push(`${pathname}?task=${task.id}`)}>
                       <div className="flex items-center gap-1.5 mb-1">
                         <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: colour }} />
                         <span className={`text-[11px] font-semibold leading-tight line-clamp-2 ${isDone ? 'line-through text-muted' : 'text-primary'}`}>

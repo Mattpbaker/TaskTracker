@@ -1,11 +1,10 @@
 'use client'
 
-export type ViewMode = 'weekly' | 'horizontal' | 'swimlane' | 'vertical' | 'calendar'
+export type ViewMode = 'weekly' | 'horizontal' | 'vertical' | 'calendar'
 
 const VIEWS: { mode: ViewMode; label: string; icon: string }[] = [
   { mode: 'weekly',     label: 'Weekly',   icon: '⊞' },
   { mode: 'horizontal', label: 'Timeline', icon: '⟶' },
-  { mode: 'swimlane',   label: 'Swimlane', icon: '⊟' },
   { mode: 'vertical',   label: 'Vertical', icon: '⇕' },
   { mode: 'calendar',   label: 'Calendar', icon: '▦' },
 ]

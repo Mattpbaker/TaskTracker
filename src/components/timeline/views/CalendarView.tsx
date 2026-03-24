@@ -1,4 +1,5 @@
 'use client'
+import { useRouter, usePathname } from 'next/navigation'
 import { COURSE_START, COURSE_END } from '@/lib/constants'
 import type { ViewProps } from './types'
 import type { Task } from '@/types/app'
@@ -29,6 +30,8 @@ function localDateStr(): string {
 }
 
 export default function CalendarView({ tasks, taskColourMap, accent = '#10b981', extra }: ViewProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const todayStr = localDateStr()
   const courseStartStr = toDateStr(COURSE_START)
   const courseEndStr = toDateStr(COURSE_END)
@@ -82,7 +85,9 @@ export default function CalendarView({ tasks, taskColourMap, accent = '#10b981',
                         {shown.map(task => {
                           const colour = taskColourMap[task.id] ?? accent
                           return (
-                            <div key={task.id} className="flex items-center gap-1 px-1 py-0.5 rounded text-[9px] truncate"
+                            <div key={task.id}
+                              onClick={() => router.push(`${pathname}?task=${task.id}`)}
+                              className="flex items-center gap-1 px-1 py-0.5 rounded text-[9px] truncate cursor-pointer hover:opacity-80 transition-opacity"
                               style={{ background: `${colour}18`, borderLeft: `2px solid ${colour}` }}>
                               <span className="truncate" style={{ color: colour }}>{task.title}</span>
                             </div>

@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import { COURSE_START } from '@/lib/constants'
 import ProgressPopup from '@/components/task-card/ProgressPopup'
 import type { ViewProps } from './types'
@@ -48,6 +49,8 @@ export default function WeeklyView({
   onProgressChange,
   searchQuery,
 }: ViewProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const todayStr = localDateStr()
   const todayWeek = weekIndex(todayStr)
 
@@ -140,6 +143,7 @@ export default function WeeklyView({
                     return (
                       <div
                         key={task.id}
+                        onClick={() => router.push(`${pathname}?task=${task.id}`)}
                         className="bg-background rounded-lg p-2.5 border border-border hover:shadow-sm transition-shadow cursor-pointer"
                         style={{
                           borderLeftColor: isOverdue ? '#f87171' : colour,
@@ -175,7 +179,7 @@ export default function WeeklyView({
                           {/* % badge — click to open ProgressPopup */}
                           {onProgressChange ? (
                             <button
-                              onClick={e => handleBadgeClick(e, task.id, task.progress)}
+                              onClick={e => { e.stopPropagation(); handleBadgeClick(e, task.id, task.progress) }}
                               className={`text-[9px] font-bold px-1 py-0.5 rounded transition-colors hover:bg-surface ${
                                 popup?.taskId === task.id
                                   ? 'text-cat-social bg-surface'

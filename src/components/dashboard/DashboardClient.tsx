@@ -8,7 +8,6 @@ import { updateProgressAction } from '@/actions/tasks'
 import ViewSwitcher, { type ViewMode } from '@/components/timeline/ViewSwitcher'
 import Timeline from '@/components/timeline/Timeline'
 import WeeklyView from '@/components/timeline/views/WeeklyView'
-import SwimlaneView from '@/components/timeline/views/SwimlaneView'
 import VerticalView from '@/components/timeline/views/VerticalView'
 import CalendarView from '@/components/timeline/views/CalendarView'
 import CategoryHeader from '@/components/category/CategoryHeader'
@@ -139,7 +138,6 @@ export default function DashboardClient({
         />
       )}
       {viewMode === 'horizontal' && <Timeline     tasks={displayTasks} categoryColourMap={catColourMap} accent={accent} extra={switcher} />}
-      {viewMode === 'swimlane'   && <SwimlaneView tasks={displayTasks} taskColourMap={taskColourMap} accent={accent} extra={switcher} categories={categories} />}
       {viewMode === 'vertical'   && <VerticalView tasks={displayTasks} taskColourMap={taskColourMap} accent={accent} extra={switcher} />}
       {viewMode === 'calendar'   && <CalendarView tasks={displayTasks} taskColourMap={taskColourMap} accent={accent} extra={switcher} />}
     </>
