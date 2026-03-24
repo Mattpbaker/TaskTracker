@@ -6,10 +6,8 @@ import { CATEGORY_COLOURS } from '@/lib/constants'
 import { useState, useEffect, useOptimistic, startTransition } from 'react'
 import { updateProgressAction } from '@/actions/tasks'
 import ViewSwitcher, { type ViewMode } from '@/components/timeline/ViewSwitcher'
-import Timeline from '@/components/timeline/Timeline'
 import WeeklyView from '@/components/timeline/views/WeeklyView'
 import VerticalView from '@/components/timeline/views/VerticalView'
-import CalendarView from '@/components/timeline/views/CalendarView'
 import CategoryHeader from '@/components/category/CategoryHeader'
 import CategoryProgressBar from '@/components/category/CategoryProgressBar'
 import CategoryInsightCards from '@/components/category/CategoryInsightCards'
@@ -102,10 +100,6 @@ export default function DashboardClient({
     ])
   )
 
-  const catColourMap: Record<string, string> = (activeCategory && !isGroup(activeCategory))
-    ? Object.fromEntries(displayTasks.map(t => [t.categoryId ?? '', accent]))
-    : colourMap
-
   const switcher = <ViewSwitcher current={viewMode} onChange={handleViewChange} />
 
   const categorySection = activeCategory ? (() => {
@@ -137,9 +131,7 @@ export default function DashboardClient({
           searchQuery={searchQuery}
         />
       )}
-      {viewMode === 'horizontal' && <Timeline     tasks={displayTasks} categoryColourMap={catColourMap} accent={accent} extra={switcher} />}
       {viewMode === 'vertical'   && <VerticalView tasks={displayTasks} taskColourMap={taskColourMap} accent={accent} extra={switcher} />}
-      {viewMode === 'calendar'   && <CalendarView tasks={displayTasks} taskColourMap={taskColourMap} accent={accent} extra={switcher} />}
     </>
   )
 }
