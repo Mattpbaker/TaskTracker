@@ -31,7 +31,7 @@ export default function DashboardClient({
   colourMap: Record<string, string>
   categories: Category[]
 }) {
-  const { activeCategory } = useCategoryContext()
+  const { activeCategory, activeMemberSlugs } = useCategoryContext()
   const { searchQuery, setSearchQuery } = useSearchContext()
   const [viewMode, setViewMode] = useState<ViewMode>('weekly')
 
@@ -74,8 +74,9 @@ export default function DashboardClient({
     .filter(t => {
       if (!activeCategory) return true
       if (isGroup(activeCategory)) {
+        const effectiveSlugs = activeMemberSlugs ?? activeCategory.memberSlugs
         const memberIds = categories
-          .filter(c => activeCategory.memberSlugs.includes(c.slug))
+          .filter(c => effectiveSlugs.includes(c.slug))
           .map(c => c.id)
         return memberIds.includes(t.categoryId ?? '')
       }

@@ -9,6 +9,10 @@ export const CATEGORY_COLOURS: Record<string, string> = {
   'annual-report':    '#f59e0b',
   'video-qa':         '#a3e635',
   'working-groups':   '#8b5cf6',
+  'enquiry':          '#3b82f6',
+  'practice':         '#22c55e',
+  'team-company':     '#f97316',
+  'self-leadership':  '#e879f9',
 }
 
 export interface CategoryGroup {
@@ -22,10 +26,17 @@ export interface CategoryGroup {
 export const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     id: 'group-reports-media',
-    name: 'Reports & Media',
+    name: 'Annual Report',
     slug: 'reports-media',
     colour: '#f59e0b',
     memberSlugs: ['recognition-day', 'annual-report', 'video-qa'],
+  },
+  {
+    id: 'group-modules',
+    name: 'Modules',
+    slug: 'modules',
+    colour: '#3b82f6',
+    memberSlugs: ['enquiry', 'practice', 'team-company', 'self-leadership'],
   },
 ]
 
