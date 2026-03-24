@@ -1,10 +1,10 @@
 'use client'
 import { createContext, useContext, useState } from 'react'
-import type { Category } from '@/types/app'
+import type { ActiveCategory } from '@/types/app'
 
 type CategoryContextValue = {
-  activeCategory: Category | null
-  setActiveCategory: (cat: Category | null) => void
+  activeCategory: ActiveCategory
+  setActiveCategory: (cat: ActiveCategory) => void
 }
 
 const CategoryContext = createContext<CategoryContextValue>({
@@ -13,7 +13,7 @@ const CategoryContext = createContext<CategoryContextValue>({
 })
 
 export function CategoryProvider({ children }: { children: React.ReactNode }) {
-  const [activeCategory, setActiveCategory] = useState<Category | null>(null)
+  const [activeCategory, setActiveCategory] = useState<ActiveCategory>(null)
   return (
     <CategoryContext.Provider value={{ activeCategory, setActiveCategory }}>
       {children}

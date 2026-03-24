@@ -6,6 +6,10 @@ export interface Category {
   description: string | null
 }
 
+export type { CategoryGroup } from '@/lib/constants'
+import type { CategoryGroup } from '@/lib/constants'
+export type ActiveCategory = Category | CategoryGroup | null
+
 export interface Task {
   id: string
   categoryId: string | null

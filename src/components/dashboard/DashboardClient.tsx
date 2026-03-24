@@ -14,9 +14,13 @@ import CalendarView from '@/components/timeline/views/CalendarView'
 import CategoryHeader from '@/components/category/CategoryHeader'
 import CategoryProgressBar from '@/components/category/CategoryProgressBar'
 import CategoryInsightCards from '@/components/category/CategoryInsightCards'
-import type { Task, Category } from '@/types/app'
+import type { Task, Category, CategoryGroup, ActiveCategory } from '@/types/app'
 
 const STORAGE_KEY = 'tt-view-mode'
+
+function isGroup(cat: ActiveCategory): cat is CategoryGroup {
+  return !!cat && 'memberSlugs' in cat
+}
 
 export default function DashboardClient({
   tasks,
@@ -67,24 +71,38 @@ export default function DashboardClient({
 
   // Apply category + search filters to optimistic task list
   const displayTasks = optimisticTasks
-    .filter(t => !activeCategory || t.categoryId === activeCategory.id)
+    .filter(t => {
+      if (!activeCategory) return true
+      if (isGroup(activeCategory)) {
+        const memberIds = categories
+          .filter(c => activeCategory.memberSlugs.includes(c.slug))
+          .map(c => c.id)
+        return memberIds.includes(t.categoryId ?? '')
+      }
+      return t.categoryId === activeCategory.id
+    })
     .filter(t =>
       !searchQuery ||
       t.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
+  // For groups: keep per-category colours. For single category: use single accent.
   const accent = activeCategory
-    ? (CATEGORY_COLOURS[activeCategory.slug] ?? activeCategory.colour)
+    ? (isGroup(activeCategory)
+        ? activeCategory.colour
+        : (CATEGORY_COLOURS[activeCategory.slug] ?? activeCategory.colour))
     : '#10b981'
 
   const taskColourMap: Record<string, string> = Object.fromEntries(
     displayTasks.map(t => [
       t.id,
-      activeCategory ? accent : (colourMap[t.categoryId ?? ''] ?? '#10b981'),
+      (activeCategory && !isGroup(activeCategory))
+        ? accent
+        : (colourMap[t.categoryId ?? ''] ?? '#10b981'),
     ])
   )
 
-  const catColourMap: Record<string, string> = activeCategory
+  const catColourMap: Record<string, string> = (activeCategory && !isGroup(activeCategory))
     ? Object.fromEntries(displayTasks.map(t => [t.categoryId ?? '', accent]))
     : colourMap
 
@@ -92,9 +110,14 @@ export default function DashboardClient({
 
   const categorySection = activeCategory ? (() => {
     const insights = computeCategoryInsights(displayTasks)
+    // CategoryGroup has same shape as Category for the header (id, name, slug, colour)
+    // Pass description: null to satisfy the Category interface
+    const headerCat: Category = isGroup(activeCategory)
+      ? { id: activeCategory.id, name: activeCategory.name, slug: activeCategory.slug, colour: activeCategory.colour, description: null }
+      : activeCategory
     return (
       <>
-        <CategoryHeader category={activeCategory} taskCount={displayTasks.length} finalDueDate={insights.finalDueDate} />
+        <CategoryHeader category={headerCat} taskCount={displayTasks.length} finalDueDate={insights.finalDueDate} />
         <CategoryProgressBar progress={insights.overallProgress} colour={accent} />
         <CategoryInsightCards insights={insights} colour={accent} />
       </>
