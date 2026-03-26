@@ -42,10 +42,10 @@ export default function DashboardClient({
     }
   )
 
-  // Restore saved view mode
+  // Restore saved view mode (guard against stale values from removed views)
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY) as ViewMode | null
-    if (saved) setViewMode(saved)
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved === 'weekly' || saved === 'vertical') setViewMode(saved)
   }, [])
 
   // Reset search when category changes

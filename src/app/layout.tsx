@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={geist.variable}>
+    <html lang="en" className={geist.variable} suppressHydrationWarning>
       <head>
         {/* Runs synchronously before first paint to apply dark class — must be sync, no defer/async */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
